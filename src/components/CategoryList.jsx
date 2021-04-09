@@ -9,15 +9,23 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+import * as Color from "../_constant/color";
+
 // Styling
 const useStyles = makeStyles({
   container: {
-    margin: "10px 100px",
+    width: "80%",
+    margin: "40px 100px",
     border: "1px solid #9da2ab",
   },
   table: {
     minWidth: 200,
-    width: "80%",
+  },
+  header: {
+    backgroundColor: Color.primary,
+  },
+  cell: {
+    color: Color.text,
   },
 });
 
@@ -28,18 +36,29 @@ const CategoryList = (props) => {
     <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
-          <TableRow>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Vietnamese</TableCell>
+          <TableRow className={classes.header}>
+            <TableCell align="right" className={classes.cell}>
+              Name
+            </TableCell>
+            <TableCell align="right" className={classes.cell}>
+              Vietnamese
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.category.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell component="th" scope="row" align="right">
+          {props.category.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell
+                component="th"
+                scope="row"
+                align="right"
+                className={classes.cell}
+              >
                 {item.name}
               </TableCell>
-              <TableCell align="right">{item.vietnamese}</TableCell>
+              <TableCell align="right" className={classes.cell}>
+                {item.vietnamese}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

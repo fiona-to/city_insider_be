@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { CreateCategory } from "../redux/actions/categoryAction";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Button, Typography } from "@material-ui/core";
@@ -14,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
+    width: "80%",
     margin: "10px 100px",
     border: "1px solid #9da2ab",
   },
@@ -23,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // COMPONENT: CategoryInputForm
-const CategoryInputForm = () => {
+const CategoryInputForm = (props) => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [vietnamese, setVietnamese] = useState("");
@@ -43,6 +46,8 @@ const CategoryInputForm = () => {
 
   const handleOnCreateClick = (e) => {
     e.preventDefault();
+    props.create({ name, vietnamese });
+    handleClearTextFields();
   };
 
   return (
@@ -83,4 +88,10 @@ const CategoryInputForm = () => {
   );
 };
 
-export default CategoryInputForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    create: (category) => dispatch(CreateCategory(category)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CategoryInputForm);

@@ -1,3 +1,3 @@
-export const primary = "#2196f3";
-export const secondary = "#f50057";
-export const text = "#756e6d";
+export const primary = "#3f51b5"; // indigo
+export const secondary = "#f50057"; // pink
+export const text = "#424242"; // grey

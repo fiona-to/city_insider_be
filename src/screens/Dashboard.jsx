@@ -6,12 +6,14 @@ import Detail from "./Detail";
 import Login from "./Login";
 import { makeStyles } from "@material-ui/core/styles";
 
+// Styling
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "30px",
   },
 }));
 
+// Component
 const Dashboard = () => {
   const classes = useStyles();
   return (
