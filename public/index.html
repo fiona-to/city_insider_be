@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -39,5 +38,40 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+
+<!------------------------------------------------------------------------------------------------>
+<!-- FIREBASE CONFIGURATION - START -->
+<!------------------------------------------------------------------------------------------------>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBv_mTaqzH0wwo3F5tHaFIlrpPUaeJRTcA",
+    authDomain: "city-insider-1344e.firebaseapp.com",
+    databaseURL: "https://city-insider-1344e-default-rtdb.firebaseio.com",
+    projectId: "city-insider-1344e",
+    storageBucket: "city-insider-1344e.appspot.com",
+    messagingSenderId: "39256943366",
+    appId: "1:39256943366:web:5a16371a05801ae04e8c87",
+    measurementId: "G-EZNC1T18SV"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  </script>
+  <!------------------------------------------------------------------------------------------------>
+  <!-- FIREBASE CONFIGURATION - END -->
+  <!------------------------------------------------------------------------------------------------>
   </body>
+
+
+
 </html>
