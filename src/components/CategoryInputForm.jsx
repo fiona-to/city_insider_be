@@ -63,7 +63,7 @@ const CategoryInputForm = (props) => {
   const handleOnCreateClick = (e) => {
     e.preventDefault();
     if (name && vietnamese) {
-      props.create({ name, vietnamese, enable });
+      props.createCategory({ name, vietnamese, enable });
       handleClearTextFields();
     } else {
       setIsRequired(true);
@@ -128,7 +128,7 @@ const CategoryInputForm = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    create: (category) => dispatch(CreateCategory(category)),
+    createCategory: (category) => dispatch(CreateCategory(category)),
   };
 };
 

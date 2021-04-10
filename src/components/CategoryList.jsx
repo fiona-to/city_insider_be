@@ -9,10 +9,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Checkbox,
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import CategoryListRow from "./CategoryListRow";
 
 // Styling
 const useStyles = makeStyles({
@@ -28,9 +28,6 @@ const useStyles = makeStyles({
     backgroundColor: Color.primary,
     color: "white",
   },
-  cell: {
-    color: Color.text,
-  },
 });
 
 // Component
@@ -41,6 +38,9 @@ const CategoryList = (props) => {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.header}>
+            <TableCell align="right" className={classes.header}>
+              &nbsp;
+            </TableCell>
             <TableCell align="right" className={classes.header}>
               Name
             </TableCell>
@@ -53,27 +53,8 @@ const CategoryList = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.category.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell
-                component="th"
-                scope="row"
-                align="right"
-                className={classes.cell}
-              >
-                {item.name}
-              </TableCell>
-              <TableCell align="right" className={classes.cell}>
-                {item.vietnamese}
-              </TableCell>
-              <TableCell align="right">
-                <Checkbox
-                  checked={item.enable}
-                  color="primary"
-                  disabled={true}
-                />
-              </TableCell>
-            </TableRow>
+          {props.category.map((item) => (
+            <CategoryListRow key={item.name} row={item} />
           ))}
         </TableBody>
       </Table>
