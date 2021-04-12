@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 // COMPONENT: CategoryEditForm
 const CategoryEditForm = (props) => {
   const classes = useStyles();
+  const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [vietnamese, setVietnamese] = useState("");
   const [enable, setEnable] = useState(false);
@@ -43,6 +44,7 @@ const CategoryEditForm = (props) => {
   const { row } = props;
 
   useEffect(() => {
+    setId(row.id);
     setName(row.name);
     setVietnamese(row.vietnamese);
     setEnable(row.enable);
@@ -70,7 +72,7 @@ const CategoryEditForm = (props) => {
   const handleOnUpdateClick = (e) => {
     e.preventDefault();
     if (name && vietnamese) {
-      props.updateCategory({ name, vietnamese, enable });
+      props.updateCategory({ id, name, vietnamese, enable });
       handleClearTextFields();
     } else {
       setIsRequired(true);

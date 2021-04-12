@@ -15,17 +15,17 @@ const initialState = {
 const CategoryReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case CREATE_CATEGORY:
-      return { ...state, category: [...state.category, payload] };
+      // Todo: remove fake ID
+      const newCat = { id: state.category.length + 1, ...payload };
+      return { ...state, category: [...state.category, newCat] };
     case DELETE_CATEGORY:
       // Todo: Compare real data's ID, not name
-      const newList = state.category.filter(
-        (item) => item.name !== payload.name
-      );
+      const newList = state.category.filter((item) => item.id !== payload.id);
       return { ...state, category: newList };
     case UPDATE_CATEGORY:
       // Todo: Compare real data's ID, not name
       const updatedIndex = state.category.findIndex(
-        (item) => (item.name = payload.name)
+        (item) => item.id === payload.id
       );
       const updatedList = [
         ...state.category.slice(0, updatedIndex),
