@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { DeleteCategory } from "../redux/actions/categoryAction";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -32,7 +33,13 @@ const useStyles = makeStyles({
 
 // Component
 const CategoryList = (props) => {
+  const { category } = props;
   const classes = useStyles();
+
+  const onCategoryDelete = (selected) => {
+    props.deleteCategory(selected);
+  };
+
   return (
     <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table} aria-label="simple table">
@@ -50,11 +57,18 @@ const CategoryList = (props) => {
             <TableCell align="right" className={classes.header}>
               Enabled
             </TableCell>
+            <TableCell align="right" className={classes.header}>
+              Admin
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.category.map((item) => (
-            <CategoryListRow key={item.name} row={item} />
+          {category.map((item) => (
+            <CategoryListRow
+              key={item.name}
+              row={item}
+              onCategoryDelete={onCategoryDelete}
+            />
           ))}
         </TableBody>
       </Table>
@@ -68,4 +82,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(CategoryList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteCategory: (selected) => dispatch(DeleteCategory(selected)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryList);

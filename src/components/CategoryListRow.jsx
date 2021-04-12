@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import CategoryEditForm from "./CategoryEditForm";
+import { makeStyles, lighten } from "@material-ui/core/styles";
 import {
   TableCell,
   TableRow,
@@ -7,12 +8,13 @@ import {
   IconButton,
   Box,
   Collapse,
-  Typography,
   Table,
-  TableBody,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
 
@@ -21,26 +23,53 @@ const useStyles = makeStyles({
   cell: {
     color: Color.text,
   },
+  iconEdit: {
+    fontSize: 28,
+    color: lighten(Color.primary, 0.6),
+    "&:hover": {
+      color: Color.primary,
+    },
+  },
+  iconDel: {
+    marginLeft: "20px",
+    fontSize: 28,
+    color: lighten(Color.secondary, 0.6),
+    "&:hover": {
+      color: Color.secondary,
+    },
+  },
+  iconClose: {
+    fontSize: 28,
+    backgroundColor: lighten(Color.secondary, 0.6),
+    color: "white",
+    "&:hover": {
+      backgroundColor: Color.secondary,
+    },
+  },
   subRow: {
-    backgroundColor: "#bdbdbd",
+    backgroundColor: lighten(Color.primary, 0.85),
   },
 });
 
 // Component
 const CategoryListRow = (props) => {
-  const { row } = props;
+  const { row, onCategoryDelete } = props;
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+
+  const handleDeleteClick = (row) => {
+    onCategoryDelete(row);
+  };
+
+  const handleEditClick = (row) => {
+    setOpen(!open);
+  };
 
   return (
     <Fragment>
       <TableRow>
         <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
+          <IconButton aria-label="expand row" size="small">
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
@@ -58,24 +87,31 @@ const CategoryListRow = (props) => {
         <TableCell align="right">
           <Checkbox checked={row.enable} color="primary" disabled={true} />
         </TableCell>
+        <TableCell align="right">
+          <EditIcon
+            className={classes.iconEdit}
+            onClick={() => handleEditClick(row)}
+          />
+          <DeleteIcon
+            className={classes.iconDel}
+            onClick={() => handleDeleteClick(row)}
+          />
+        </TableCell>
       </TableRow>
       <TableRow className={classes.subRow}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Viewing / Editing
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableBody>
-                  <TableRow key={row.name}>
-                    <TableCell align="right">{row.name}</TableCell>
-                    <TableCell align="right">{row.vietnamese}</TableCell>
-                    <TableCell align="right">
-                      <Checkbox checked={row.enable} color="primary" />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
+              <Table>
+                <TableCell colSpan={5}>
+                  <CategoryEditForm row={row} />
+                </TableCell>
+                <TableCell colSpan={1}>
+                  <CloseIcon
+                    className={classes.iconClose}
+                    onClick={() => setOpen(false)}
+                  />
+                </TableCell>
               </Table>
             </Box>
           </Collapse>
