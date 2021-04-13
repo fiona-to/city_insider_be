@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import CategoryEditForm from "./CategoryEditForm";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 import {
   TableCell,
@@ -17,6 +16,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
+import CategoryEditForm from "./CategoryEditForm";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 // Styling
 const useStyles = makeStyles({
@@ -55,10 +56,13 @@ const useStyles = makeStyles({
 const CategoryListRow = (props) => {
   const { row, onCategoryDelete } = props;
   const [open, setOpen] = useState(false);
+  const [openDelDialog, setOpenDelDialog] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const classes = useStyles();
 
   const handleDeleteClick = (row) => {
-    onCategoryDelete(row);
+    //onCategoryDelete(row);
+    setOpenDelDialog(true);
   };
 
   const handleEditClick = (row) => {
@@ -67,6 +71,7 @@ const CategoryListRow = (props) => {
 
   return (
     <Fragment>
+      {openDelDialog ? <ConfirmDeleteDialog open={openDelDialog} /> : null}
       <TableRow>
         <TableCell>
           <IconButton aria-label="expand row" size="small">
