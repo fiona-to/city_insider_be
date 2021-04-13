@@ -28,12 +28,11 @@ const ConfirmDeleteDialog = (props) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Use Google's location service?"}
+        {"Are you sure to delete?"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
+          Once you agree to delete, you are not able to undo!
         </DialogContentText>
       </DialogContent>
       <DialogActions>
