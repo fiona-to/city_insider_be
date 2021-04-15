@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     fontSize: 28,
     backgroundColor: lighten(Color.secondary, 0.6),
     color: "white",
+    borderRadius: "3px",
     "&:hover": {
       backgroundColor: Color.secondary,
     },
@@ -55,27 +56,45 @@ const useStyles = makeStyles({
 // Component
 const CategoryListRow = (props) => {
   const { row, onCategoryDelete } = props;
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [openDelDialog, setOpenDelDialog] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
+  const [deletedRow, setDeletedRow] = useState(null);
   const classes = useStyles();
 
-  const handleDeleteClick = (row) => {
+  const handleEditClick = (row) => {
+    setOpenEdit(!openEdit);
+  };
+
+  const handleDeleteButtonClick = (row) => {
     //onCategoryDelete(row);
+    setDeletedRow(row);
     setOpenDelDialog(true);
   };
 
-  const handleEditClick = (row) => {
-    setOpen(!open);
+  const handleCancelDeleteClick = () => {
+    setDeletedRow(null);
+    setOpenDelDialog(false);
+  };
+
+  const handleAgreeDelete = () => {
+    onCategoryDelete(deletedRow);
+    setDeletedRow(null);
+    setOpenDelDialog(false);
   };
 
   return (
     <Fragment>
-      {openDelDialog ? <ConfirmDeleteDialog open={openDelDialog} /> : null}
+      {openDelDialog ? (
+        <ConfirmDeleteDialog
+          open={openDelDialog}
+          handleCancelDeleteClick={handleCancelDeleteClick}
+          handleAgreeDelete={handleAgreeDelete}
+        />
+      ) : null}
       <TableRow>
         <TableCell>
           <IconButton aria-label="expand row" size="small">
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {openEdit ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
         <TableCell
@@ -99,13 +118,13 @@ const CategoryListRow = (props) => {
           />
           <DeleteIcon
             className={classes.iconDel}
-            onClick={() => handleDeleteClick(row)}
+            onClick={() => handleDeleteButtonClick(row)}
           />
         </TableCell>
       </TableRow>
       <TableRow className={classes.subRow}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={openEdit} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Table>
                 <TableCell colSpan={5}>
@@ -114,7 +133,7 @@ const CategoryListRow = (props) => {
                 <TableCell colSpan={1}>
                   <CloseIcon
                     className={classes.iconClose}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpenEdit(false)}
                   />
                 </TableCell>
               </Table>

@@ -77,7 +77,6 @@ const CategoryList = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.category.category);
   return {
     category: state.category.category,
   };

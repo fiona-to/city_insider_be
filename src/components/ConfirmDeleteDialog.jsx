@@ -18,6 +18,12 @@ const ConfirmDeleteDialog = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    props.handleCancelDeleteClick();
+  };
+
+  const handleAgreeDelete = () => {
+    setOpen(false);
+    props.handleAgreeDelete();
   };
 
   return (
@@ -36,10 +42,15 @@ const ConfirmDeleteDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleAgreeDelete} color="primary" variant="contained">
           Agree
         </Button>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button
+          onClick={handleClose}
+          color="secondary"
+          variant="contained"
+          autoFocus
+        >
           Cancel
         </Button>
       </DialogActions>
