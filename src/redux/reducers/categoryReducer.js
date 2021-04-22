@@ -2,6 +2,8 @@ import {
   CREATE_CATEGORY,
   DELETE_CATEGORY,
   UPDATE_CATEGORY,
+  ADD_CATEGORY_SUCCESS,
+  ADD_CATEGORY_ERROR,
 } from "../actions/categoryAction";
 
 // Init state
@@ -33,6 +35,12 @@ const CategoryReducer = (state = initialState, { type, payload }) => {
         ...state.category.slice(updatedIndex + 1),
       ];
       return { ...state, category: updatedList };
+    case ADD_CATEGORY_SUCCESS:
+      console.log("New category added!");
+      return state;
+    case ADD_CATEGORY_ERROR:
+      console.log("Adding category error: ", payload);
+      return state;
     default:
       return state;
   }

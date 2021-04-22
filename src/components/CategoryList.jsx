@@ -1,5 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import { useFirestoreConnect } from "react-redux-firebase";
 import { DeleteCategory } from "../redux/actions/categoryAction";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -33,8 +34,13 @@ const useStyles = makeStyles({
 
 // Component
 const CategoryList = (props) => {
-  const { category } = props;
   const classes = useStyles();
+
+  // Connect to firestore's collection named "category"
+  useFirestoreConnect(["category"]);
+  const category = useSelector((state) => {
+    return state.firestore.ordered.category;
+  });
 
   const onCategoryDelete = (selected) => {
     props.deleteCategory(selected);
@@ -63,23 +69,18 @@ const CategoryList = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {category.map((item) => (
-            <CategoryListRow
-              key={item.name}
-              row={item}
-              onCategoryDelete={onCategoryDelete}
-            />
-          ))}
+          {category &&
+            category.map((item) => (
+              <CategoryListRow
+                key={item.id}
+                row={item}
+                onCategoryDelete={onCategoryDelete}
+              />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    category: state.category.category,
-  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -88,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryList);
+export default connect(null, mapDispatchToProps)(CategoryList);

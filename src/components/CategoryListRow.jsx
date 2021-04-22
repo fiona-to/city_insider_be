@@ -66,7 +66,6 @@ const CategoryListRow = (props) => {
   };
 
   const handleDeleteButtonClick = (row) => {
-    //onCategoryDelete(row);
     setDeletedRow(row);
     setOpenDelDialog(true);
   };
