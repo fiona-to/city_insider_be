@@ -8,6 +8,7 @@ import {
   Box,
   Collapse,
   Table,
+  TableBody,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -50,6 +51,14 @@ const useStyles = makeStyles({
   },
   subRow: {
     backgroundColor: lighten(Color.primary, 0.85),
+  },
+  subCell: {
+    paddingTop: "0px",
+    paddingBottom: "0px",
+  },
+  btnClose: {
+    marginTop: "-70px",
+    marginLeft: "-18px",
   },
 });
 
@@ -122,19 +131,30 @@ const CategoryListRow = (props) => {
         </TableCell>
       </TableRow>
       <TableRow className={classes.subRow}>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={openEdit} timeout="auto" unmountOnExit>
+        <TableCell className={classes.subCell} colSpan={5}>
+          <Collapse
+            in={openEdit}
+            timeout="auto"
+            unmountOnExit
+            disableStrictModeCompat={true}
+          >
             <Box margin={1}>
               <Table>
-                <TableCell colSpan={5}>
-                  <CategoryEditForm row={row} />
-                </TableCell>
-                <TableCell colSpan={1}>
-                  <CloseIcon
-                    className={classes.iconClose}
-                    onClick={() => setOpenEdit(false)}
-                  />
-                </TableCell>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={4} className={classes.subCell}>
+                      <CategoryEditForm row={row} />
+                    </TableCell>
+                    <TableCell colSpan={1}>
+                      <div className={classes.btnClose}>
+                        <CloseIcon
+                          className={classes.iconClose}
+                          onClick={() => setOpenEdit(false)}
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               </Table>
             </Box>
           </Collapse>

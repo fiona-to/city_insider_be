@@ -1,4 +1,3 @@
-import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
@@ -11,6 +10,7 @@ import {
   reduxFirestore,
 } from "redux-firestore";
 import firebase, { fbConfig } from "./config/fbConfig";
+import { makeStyles } from "@material-ui/core/styles";
 
 import NavBar from "./components/NavBar";
 import Dashboard from "./screens/Dashboard";
@@ -32,12 +32,19 @@ const rrfProps = {
   createFirestoreInstance,
 };
 
+const useStyles = makeStyles({
+  appContainer: {
+    textAlign: "center",
+  },
+});
+
 function App() {
+  const classes = useStyles();
   return (
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <BrowserRouter>
-          <div className="App">
+          <div className={classes.appContainer}>
             <NavBar />
             <Dashboard />
           </div>

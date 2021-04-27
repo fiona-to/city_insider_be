@@ -19,8 +19,8 @@ import CategoryListRow from "./CategoryListRow";
 // Styling
 const useStyles = makeStyles({
   container: {
-    width: "80%",
-    margin: "40px 100px",
+    width: "100%",
+    marginTop: "40px",
     border: "1px solid #9da2ab",
   },
   table: {

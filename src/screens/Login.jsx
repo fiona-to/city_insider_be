@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    margin: "10px 100px",
+    width: "80%",
+    margin: "10px auto",
     border: "1px solid #9da2ab",
   },
   text: {

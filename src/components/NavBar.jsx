@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar, Typography } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as FontSize from "../_constant/fontSize";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "white",
       borderBottom: "1px solid white",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smAppBar,
+      padding: "6px 10px",
     },
   },
   selectedLink: {
