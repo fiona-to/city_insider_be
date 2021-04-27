@@ -1,13 +1,16 @@
-export const CREATE_CATEGORY = "CREATE_CATEGORY";
-export const DELETE_CATEGORY = "DELETE_CATEGORY";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const ADD_CATEGORY_SUCCESS = "ADD_CATEGORY_SUCCESS";
 export const ADD_CATEGORY_ERROR = "ADD_CATEGORY_ERROR";
+export const DELETE_CATEGORY_SUCCESS = "DELETE_CATEGORY_SUCCESS";
+export const DELETE_CATEGORY_ERROR = "DELETE_CATEGORY_ERROR";
+export const UPDATE_CATEGORY_SUCCESS = "UPDATE_CATEGORY_SUCCESS";
+export const UPDATE_CATEGORY_ERROR = "UPDATE_CATEGORY_ERROR";
 
 // Create new category
 export const CreateCategory = (category) => {
-  return (dispatch, getSate, { getFirestore }) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
+
     firestore
       .collection("category")
       .add(category)
@@ -18,10 +21,10 @@ export const CreateCategory = (category) => {
           payload: { id, ...category },
         });
       })
-      .catch((err) =>
+      .catch((error) =>
         dispatch({
           type: ADD_CATEGORY_ERROR,
-          payload: err,
+          payload: error,
         })
       );
   };
@@ -29,20 +32,52 @@ export const CreateCategory = (category) => {
 
 // Delete an existing category
 export const DeleteCategory = (category) => {
-  return (dispatch) => {
-    dispatch({
-      type: DELETE_CATEGORY,
-      payload: category,
-    });
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    const { id } = category;
+    firestore
+      .collection("category")
+      .doc(id)
+      .delete()
+      .then(() => {
+        dispatch({
+          type: DELETE_CATEGORY_SUCCESS,
+          payload: category,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "DELETE_CATEGORY_ERROR",
+          payload: error,
+        });
+      });
   };
 };
 
 // Update / edit an existing category
 export const UpdateCategory = (category) => {
-  return (dispatch) => {
-    dispatch({
-      type: UPDATE_CATEGORY,
-      payload: category,
-    });
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    const { id, name, vietnamese, enable } = category;
+    const refCategory = firestore.collection("category").doc(id);
+
+    refCategory
+      .update({
+        name,
+        vietnamese,
+        enable,
+      })
+      .then(() => {
+        dispatch({
+          type: UPDATE_CATEGORY_SUCCESS,
+          payload: category,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: UPDATE_CATEGORY_ERROR,
+          payload: error,
+        });
+      });
   };
 };

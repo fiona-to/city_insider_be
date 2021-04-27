@@ -1,10 +1,13 @@
 import { combineReducers } from "redux";
-import CategoryReducer from "./categoryReducer";
 import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
 
+import CategoryReducer from "./categoryReducer";
+import NodeReducer from "./nodeReducer";
+
 const RootReducer = combineReducers({
   category: CategoryReducer,
+  node: NodeReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });

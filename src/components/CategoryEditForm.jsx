@@ -58,15 +58,15 @@ const CategoryEditForm = (props) => {
     setVietnamese(e.target.value);
   };
 
+  const handleEnableChange = (e) => {
+    setEnable(e.target.checked);
+  };
+
   const handleClearTextFields = () => {
     setName("");
     setVietnamese("");
     setEnable(false);
     setIsRequired(false);
-  };
-
-  const handleEnableChange = (e) => {
-    setEnable(e.target.checked);
   };
 
   const handleOnUpdateClick = (e) => {
