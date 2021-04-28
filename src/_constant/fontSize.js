@@ -8,3 +8,4 @@ export const smText = "12px";
 
 export const smIcon = "20px";
 export const normIcon = "28px";
+export const hugeIcon = "48px";

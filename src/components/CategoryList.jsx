@@ -20,8 +20,8 @@ import CategoryListRow from "./CategoryListRow";
 // Styling
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: "100%",
-    marginTop: "40px",
+    width: "98%",
+    marginTop: "40px auto",
     border: "1px solid #9da2ab",
   },
   table: {
