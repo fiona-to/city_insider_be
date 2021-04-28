@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as FontSize from "../_constant/fontSize";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
       width: "25ch",
+
+      // Media Query
+      [theme.breakpoints.down("sm")]: {
+        width: "21ch",
+      },
     },
   },
   container: {
@@ -27,6 +33,15 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     color: Color.text,
+  },
+  header: {
+    color: Color.text,
+    marginTop: "12px",
+
+    // Media Query
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smHeader,
+    },
   },
   checkbox: {
     color: Color.text,
@@ -73,7 +88,7 @@ const CategoryInputForm = (props) => {
 
   return (
     <div className={classes.container}>
-      <Typography variant="h5" className={classes.text}>
+      <Typography variant="h5" className={classes.header}>
         Category
       </Typography>
       <form className={classes.form}>

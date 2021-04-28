@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: "1px solid white",
     },
 
+    // Media Query
     [theme.breakpoints.down("sm")]: {
       fontSize: FontSize.smAppBar,
       padding: "6px 10px",

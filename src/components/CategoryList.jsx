@@ -14,23 +14,29 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as FontSize from "../_constant/fontSize";
 import CategoryListRow from "./CategoryListRow";
 
 // Styling
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     marginTop: "40px",
     border: "1px solid #9da2ab",
   },
   table: {
-    minWidth: 200,
+    //minWidth: 200,
   },
   header: {
     backgroundColor: Color.primary,
     color: "white",
+
+    // Media Query
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smTblHeader,
+    },
   },
-});
+}));
 
 // Component
 const CategoryList = (props) => {

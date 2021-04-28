@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: "10px auto",
     border: "1px solid #9da2ab",
+    textAlign: "center",
   },
   text: {
     color: Color.text,

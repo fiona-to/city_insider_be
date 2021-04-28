@@ -17,27 +17,43 @@ import EditIcon from "@material-ui/icons/Edit";
 import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
+import * as FontSize from "../_constant/fontSize";
 import CategoryEditForm from "./CategoryEditForm";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 // Styling
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   cell: {
     color: Color.text,
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smText,
+    },
   },
   iconEdit: {
-    fontSize: 28,
+    fontSize: FontSize.normIcon,
     color: lighten(Color.primary, 0.6),
     "&:hover": {
       color: Color.primary,
     },
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smIcon,
+    },
   },
   iconDel: {
     marginLeft: "20px",
-    fontSize: 28,
+    fontSize: FontSize.normIcon,
     color: lighten(Color.secondary, 0.6),
     "&:hover": {
       color: Color.secondary,
+    },
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      fontSize: FontSize.smIcon,
     },
   },
   iconClose: {
@@ -60,7 +76,7 @@ const useStyles = makeStyles({
     marginTop: "-70px",
     marginLeft: "-18px",
   },
-});
+}));
 
 // Component
 const CategoryListRow = (props) => {
