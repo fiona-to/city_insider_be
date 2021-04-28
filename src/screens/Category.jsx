@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: Color.green,
     },
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      margin: "5px auto",
+    },
   },
   iconClose: {
     fontSize: FontSize.normIcon,
@@ -29,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "3px",
     "&:hover": {
       backgroundColor: Color.secondary,
+    },
+  },
+  closeBtn: {
+    marginTop: "-90px",
+    marginLeft: "-20px",
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "-120px",
     },
   },
 }));
@@ -48,7 +60,7 @@ const Category = () => {
                 <CategoryInputForm />
               </TableCell>
               <TableCell colSpan={1}>
-                <div>
+                <div className={classes.closeBtn}>
                   <CloseIcon
                     className={classes.iconClose}
                     onClick={() => setIsAdd(false)}
@@ -59,8 +71,6 @@ const Category = () => {
           </TableBody>
         </Table>
       ) : (
-        // className="fa fa-plus-circle"
-        // style={{ color: "green", fontSize: 48, margin: "20px auto" }}
         <AddCircleOutlineIcon
           className={classes.iconAdd}
           onClick={() => {
