@@ -61,7 +61,7 @@ const NavBar = () => {
               className={classes.menuLink}
               activeClassName={classes.selectedLink}
             >
-              Product
+              Node
             </NavLink>
           </Typography>
 
@@ -71,7 +71,7 @@ const NavBar = () => {
               className={classes.menuLink}
               activeClassName={classes.selectedLink}
             >
-              Item
+              Detail
             </NavLink>
           </Typography>
 
