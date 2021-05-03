@@ -68,7 +68,9 @@ const NodeInputForm = (props) => {
   const [vietnamese, setVietnamese] = useState("");
   const [enable, setEnable] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
-  const [catId, setCatId] = useState(null);
+  const [catType, setCatType] = useState("");
+  const [catId, setCatId] = useState("");
+  const [catName, setCatName] = useState("");
   const [isRequired, setIsRequired] = useState(false);
 
   // connect to firebase's firestore
@@ -94,14 +96,20 @@ const NodeInputForm = (props) => {
   };
 
   const handleCategoryTypeChange = (e) => {
-    setCatId(e.target.value);
+    setCatType(e.target.value);
+
+    const selectedCategory = e.target.value.split("-");
+    setCatId(selectedCategory[0]);
+    setCatName(selectedCategory[1]);
   };
 
   const handleClearTextFields = () => {
     setName("");
     setVietnamese("");
     setImgUrl("");
-    setCatId(null);
+    setCatType("");
+    setCatId("");
+    setCatName("");
     setEnable(false);
     setIsRequired(false);
   };
@@ -109,7 +117,13 @@ const NodeInputForm = (props) => {
   const handleOnCreateClick = (e) => {
     e.preventDefault();
     if (name && vietnamese && imgUrl && catId) {
-      props.createNode({ name, vietnamese, imgUrl, enable, catId });
+      props.createNode({
+        name,
+        vietnamese,
+        imgUrl,
+        enable,
+        catType: { catId, catName },
+      });
       handleClearTextFields();
     } else {
       setIsRequired(true);
@@ -145,7 +159,7 @@ const NodeInputForm = (props) => {
           <Select
             labelId="lblCatId"
             id="catId"
-            value={catId}
+            value={catType}
             onChange={handleCategoryTypeChange}
           >
             <MenuItem value="">
@@ -153,7 +167,11 @@ const NodeInputForm = (props) => {
             </MenuItem>
             {categories &&
               categories.map((item) => {
-                return <MenuItem value={item.id}>{item.name}</MenuItem>;
+                return (
+                  <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
+                    {item.name}
+                  </MenuItem>
+                );
               })}
           </Select>
         </FormControl>

@@ -9,7 +9,6 @@ export const DELETE_NODE_ERROR = "DELETE_NODE_ERROR";
 export const CreateNode = (node) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-
     firestore
       .collection("node")
       .add(node)
@@ -47,6 +46,28 @@ export const DeleteNode = (node) => {
       .catch((error) => {
         dispatch({
           type: "DELETE_NODE_ERROR",
+          payload: error,
+        });
+      });
+  };
+};
+
+// Update / edit an existing node
+export const UpdateNode = ({ id, payload }) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    const refNode = firestore.collection("node").doc(id);
+    refNode
+      .update({ ...payload })
+      .then(() => {
+        dispatch({
+          type: UPDATE_NODE_SUCCESS,
+          payload: { id },
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: UPDATE_NOTE_ERROR,
           payload: error,
         });
       });

@@ -42,12 +42,16 @@ const ConfirmDeleteDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleAgreeDelete} color="primary" variant="contained">
+        <Button
+          onClick={handleAgreeDelete}
+          color="secondary"
+          variant="contained"
+        >
           Agree
         </Button>
         <Button
           onClick={handleClose}
-          color="secondary"
+          color="primary"
           variant="contained"
           autoFocus
         >

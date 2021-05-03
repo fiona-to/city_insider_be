@@ -67,6 +67,9 @@ const NodeList = (props) => {
               Vietnamese
             </TableCell>
             <TableCell align="right" className={classes.header}>
+              Category
+            </TableCell>
+            <TableCell align="right" className={classes.header}>
               Enabled
             </TableCell>
             <TableCell align="right" className={classes.header}>

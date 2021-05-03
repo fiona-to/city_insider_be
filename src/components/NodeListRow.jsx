@@ -18,7 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
-import CategoryEditForm from "./NodeEditForm";
+import NodeEditForm from "./NodeEditForm";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 // Styling
@@ -132,6 +132,9 @@ const NodeListRow = (props) => {
         <TableCell align="right" className={classes.cell}>
           {row.vietnamese}
         </TableCell>
+        <TableCell align="right" className={classes.cell}>
+          {row.catType.catName}
+        </TableCell>
         <TableCell align="right">
           <Checkbox checked={row.enable} color="primary" disabled={true} />
         </TableCell>
@@ -159,7 +162,7 @@ const NodeListRow = (props) => {
                 <TableBody>
                   <TableRow>
                     <TableCell colSpan={4} className={classes.subCell}>
-                      {/* <NodeEditForm row={row} /> */}
+                      <NodeEditForm row={row} />
                     </TableCell>
                     <TableCell colSpan={1}>
                       <div className={classes.btnClose}>
