@@ -6,7 +6,6 @@ import { UpdateNode } from "../redux/actions/nodeAction";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
-  Typography,
   TextField,
   Checkbox,
   Select,
@@ -21,29 +20,36 @@ import * as Color from "../_constant/color";
 // Styling
 const useStyles = makeStyles((theme) => ({
   form: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "30ch",
-    },
-  },
-  container: {
     width: "100%",
     margin: "10px auto",
     border: "1px solid #9da2ab",
     textAlign: "center",
+
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "30ch",
+    },
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      "& > *": {
+        width: "28ch",
+      },
+    },
   },
   text: {
     color: Color.text,
-  },
-  checkbox: {
-    color: Color.text,
-  },
-  selectCatBox: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+    textAlign: "left",
   },
   imgUrlBox: {
-    textAlign: "center",
+    color: Color.text,
+    textAlign: "left",
+    width: "60ch",
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      width: "28ch",
+    },
   },
 }));
 
@@ -134,88 +140,79 @@ const NodeEditForm = (props) => {
   };
 
   return (
-    <div className={classes.container}>
-      <Typography variant="h5" className={classes.header}>
-        Node
-      </Typography>
-      <form className={classes.form}>
-        <TextField
-          id="name"
-          label="Name"
-          value={name}
-          onChange={handleNameChanged}
-          required={true}
-          error={isRequired && !name}
-        />
-        <TextField
-          id="vietnamese"
-          label="Vietnamese"
-          value={vietnamese}
-          onChange={handleVietnameseChange}
-          required={true}
-          error={isRequired && !vietnamese}
-        />
-        <br />
-        <FormControl required className={classes.selectCatBox}>
-          <InputLabel id="lblCatId">Category</InputLabel>
-          <Select
-            labelId="lblCatId"
-            id="catId"
-            value={catType}
-            onChange={handleCategoryTypeChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {categories &&
-              categories.map((item) => {
-                return (
-                  <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-          </Select>
-        </FormControl>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={enable}
-              onChange={handleEnableChange}
-              color="primary"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          }
-          label="Enabled"
-          className={classes.checkbox}
-        />
-        <br />
-        <TextField
-          id="imgUrl"
-          label="Image Url"
-          value={imgUrl}
-          onChange={handleImgUrlChange}
-          required={true}
-          error={isRequired && !imgUrl}
-        />
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnUpdateClick}
+    <form className={classes.form}>
+      <TextField
+        id="name"
+        label="Name"
+        value={name}
+        onChange={handleNameChanged}
+        required={true}
+        error={isRequired && !name}
+      />
+      <TextField
+        id="vietnamese"
+        label="Vietnamese"
+        value={vietnamese}
+        onChange={handleVietnameseChange}
+        required={true}
+        error={isRequired && !vietnamese}
+      />
+      <br />
+      <FormControl required>
+        <InputLabel id="lblCatId">Category</InputLabel>
+        <Select
+          labelId="lblCatId"
+          id="catId"
+          value={catType}
+          onChange={handleCategoryTypeChange}
         >
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearTextFields}
-        >
-          Clear
-        </Button>
-      </form>
-    </div>
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {categories &&
+            categories.map((item) => {
+              return (
+                <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
+                  {item.name}
+                </MenuItem>
+              );
+            })}
+        </Select>
+      </FormControl>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={enable}
+            onChange={handleEnableChange}
+            color="primary"
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+        }
+        label="Enabled"
+      />
+      <br />
+      <TextField
+        id="imgUrl"
+        label="Image Url"
+        value={imgUrl}
+        className={classes.imgUrlBox}
+        onChange={handleImgUrlChange}
+        required={true}
+        error={isRequired && !imgUrl}
+      />
+      <br />
+      <br />
+      <Button variant="contained" color="primary" onClick={handleOnUpdateClick}>
+        Update
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleClearTextFields}
+      >
+        Clear
+      </Button>
+    </form>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import PropTypes from "prop-types";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 import {
   TableCell,
@@ -10,6 +11,7 @@ import {
   Table,
   TableBody,
 } from "@material-ui/core";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,6 +27,7 @@ import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 const useStyles = makeStyles((theme) => ({
   cell: {
     color: Color.text,
+    gridColumnEnd: "span 2",
 
     // Media query
     [theme.breakpoints.down("sm")]: {
@@ -65,7 +68,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: Color.secondary,
     },
   },
-  subRow: {
+  gridRow: {
+    gridColumnEnd: "span 12",
+  },
+  gridSubRow: {
+    gridColumnEnd: "span 12",
     backgroundColor: lighten(Color.primary, 0.85),
   },
   subCell: {
@@ -115,30 +122,31 @@ const NodeListRow = (props) => {
           handleAgreeDelete={handleAgreeDelete}
         />
       ) : null}
-      <TableRow>
-        <TableCell>
+      <TableRow className={classes.gridRow}>
+        <TableCell className={classes.cell}>
           <IconButton aria-label="expand row" size="small">
             {openEdit ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell
-          component="th"
-          scope="row"
-          align="right"
-          className={classes.cell}
-        >
+        <TableCell align="right" className={classes.cell}>
           {row.name}
         </TableCell>
+        {/* Only showing column if screen width is from "md", "lg" */}
+        {isWidthUp("sm", props.width) ? (
+          <TableCell align="right" className={classes.cell}>
+            {row.vietnamese}
+          </TableCell>
+        ) : null}
+        {/* Only showing column if screen width is from "md", "lg" */}
+        {isWidthUp("sm", props.width) ? (
+          <TableCell align="right" className={classes.cell}>
+            {row.catType.catName}
+          </TableCell>
+        ) : null}
         <TableCell align="right" className={classes.cell}>
-          {row.vietnamese}
-        </TableCell>
-        <TableCell align="right" className={classes.cell}>
-          {row.catType.catName}
-        </TableCell>
-        <TableCell align="right">
           <Checkbox checked={row.enable} color="primary" disabled={true} />
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" className={classes.cell}>
           <EditIcon
             className={classes.iconEdit}
             onClick={() => handleEditClick(row)}
@@ -149,8 +157,8 @@ const NodeListRow = (props) => {
           />
         </TableCell>
       </TableRow>
-      <TableRow className={classes.subRow}>
-        <TableCell className={classes.subCell} colSpan={5}>
+      <TableRow className={classes.gridSubRow}>
+        <TableCell className={classes.subCell} colSpan={6}>
           <Collapse
             in={openEdit}
             timeout="auto"
@@ -161,7 +169,7 @@ const NodeListRow = (props) => {
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell colSpan={4} className={classes.subCell}>
+                    <TableCell colSpan={5} className={classes.subCell}>
                       <NodeEditForm row={row} />
                     </TableCell>
                     <TableCell colSpan={1}>
@@ -183,4 +191,8 @@ const NodeListRow = (props) => {
   );
 };
 
-export default NodeListRow;
+NodeListRow.propTypes = {
+  width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired,
+};
+
+export default withWidth()(NodeListRow);

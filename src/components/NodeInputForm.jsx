@@ -20,25 +20,23 @@ import * as FontSize from "../_constant/fontSize";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
-  form: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "30ch",
-
-      // Media Query
-      [theme.breakpoints.down("sm")]: {
-        width: "21ch",
-      },
-    },
-  },
   container: {
     width: "100%",
     margin: "10px auto",
     border: "1px solid #9da2ab",
     textAlign: "center",
   },
-  text: {
-    color: Color.text,
+  form: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "30ch",
+    },
+    // Media Query
+    [theme.breakpoints.down("sm")]: {
+      "& > *": {
+        width: "28ch",
+      },
+    },
   },
   header: {
     color: Color.text,
@@ -49,15 +47,15 @@ const useStyles = makeStyles((theme) => ({
       fontSize: FontSize.smHeader,
     },
   },
-  checkbox: {
-    color: Color.text,
-  },
-  selectCatBox: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
   imgUrlBox: {
-    textAlign: "center",
+    color: Color.text,
+    textAlign: "left",
+    width: "60ch",
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      width: "28ch",
+    },
   },
 }));
 
@@ -154,11 +152,11 @@ const NodeInputForm = (props) => {
           error={isRequired && !vietnamese}
         />
         <br />
-        <FormControl required className={classes.selectCatBox}>
+        <FormControl required>
           <InputLabel id="lblCatId">Category</InputLabel>
           <Select
             labelId="lblCatId"
-            id="catId"
+            id="catType"
             value={catType}
             onChange={handleCategoryTypeChange}
           >
@@ -185,13 +183,13 @@ const NodeInputForm = (props) => {
             />
           }
           label="Enabled"
-          className={classes.checkbox}
         />
         <br />
         <TextField
           id="imgUrl"
           label="Image Url"
           value={imgUrl}
+          className={classes.imgUrlBox}
           onChange={handleImgUrlChange}
           required={true}
           error={isRequired && !imgUrl}
