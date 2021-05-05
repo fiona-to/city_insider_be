@@ -15,22 +15,22 @@ import * as FontSize from "../_constant/fontSize";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
-  form: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-
-      // Media Query
-      [theme.breakpoints.down("sm")]: {
-        width: "21ch",
-      },
-    },
-  },
   container: {
     width: "100%",
     margin: "10px auto",
     border: "1px solid #9da2ab",
     textAlign: "center",
+  },
+  form: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "30ch",
+
+      // Media Query
+      [theme.breakpoints.down("sm")]: {
+        width: "25ch",
+      },
+    },
   },
   text: {
     color: Color.text,

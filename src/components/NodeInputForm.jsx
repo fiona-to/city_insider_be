@@ -30,11 +30,12 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
       width: "30ch",
+      textAlign: "left",
     },
     // Media Query
     [theme.breakpoints.down("sm")]: {
       "& > *": {
-        width: "28ch",
+        width: "25ch",
       },
     },
   },

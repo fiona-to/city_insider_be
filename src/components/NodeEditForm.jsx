@@ -28,18 +28,15 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
       width: "30ch",
+      textAlign: "left",
     },
 
     // Media query
     [theme.breakpoints.down("sm")]: {
       "& > *": {
-        width: "28ch",
+        width: "25ch",
       },
     },
-  },
-  text: {
-    color: Color.text,
-    textAlign: "left",
   },
   imgUrlBox: {
     color: Color.text,

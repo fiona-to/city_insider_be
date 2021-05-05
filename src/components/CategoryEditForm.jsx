@@ -15,19 +15,23 @@ import * as Color from "../_constant/color";
 // Styling
 const useStyles = makeStyles((theme) => ({
   form: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-  container: {
     width: "100%",
     margin: "10px auto",
     border: "1px solid #9da2ab",
     textAlign: "center",
-  },
-  text: {
-    color: Color.text,
+
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "30ch",
+      textAlign: "left",
+    },
+
+    // Media query
+    [theme.breakpoints.down("sm")]: {
+      "& > *": {
+        width: "25ch",
+      },
+    },
   },
   checkbox: {
     color: Color.text,
@@ -82,54 +86,48 @@ const CategoryEditForm = (props) => {
   };
 
   return (
-    <div className={classes.container}>
-      <form className={classes.form}>
-        <TextField
-          id="name"
-          label="Name"
-          value={name}
-          onChange={handleNameChanged}
-          required={true}
-          error={isRequired && !name}
-        />
-        <TextField
-          id="vietnamese"
-          label="Vietnamese"
-          value={vietnamese}
-          onChange={handleVietnameseChange}
-          required={true}
-          error={isRequired && !vietnamese}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={enable}
-              onChange={handleEnableChange}
-              color="primary"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          }
-          label="Enabled"
-          className={classes.checkbox}
-        />
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnUpdateClick}
-        >
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearTextFields}
-        >
-          Clear
-        </Button>
-      </form>
-    </div>
+    <form className={classes.form}>
+      <TextField
+        id="name"
+        label="Name"
+        value={name}
+        onChange={handleNameChanged}
+        required={true}
+        error={isRequired && !name}
+      />
+      <TextField
+        id="vietnamese"
+        label="Vietnamese"
+        value={vietnamese}
+        onChange={handleVietnameseChange}
+        required={true}
+        error={isRequired && !vietnamese}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={enable}
+            onChange={handleEnableChange}
+            color="primary"
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+        }
+        label="Enabled"
+        className={classes.checkbox}
+      />
+      <br />
+      <br />
+      <Button variant="contained" color="primary" onClick={handleOnUpdateClick}>
+        Update
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleClearTextFields}
+      >
+        Clear
+      </Button>
+    </form>
   );
 };
 

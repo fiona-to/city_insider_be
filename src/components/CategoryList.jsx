@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { DeleteCategory } from "../redux/actions/categoryAction";
@@ -7,11 +8,11 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Grid,
 } from "@material-ui/core";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
@@ -19,17 +20,18 @@ import CategoryListRow from "./CategoryListRow";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
-  container: {
-    width: "98%",
-    marginTop: "40px auto",
-    border: "1px solid #9da2ab",
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(12, 1fr)",
+    gridGap: theme.spacing(1),
   },
-  table: {
-    //minWidth: 200,
+  gridRow: {
+    gridColumnEnd: "span 12",
   },
   header: {
     backgroundColor: Color.primary,
     color: "white",
+    gridColumnEnd: "span 2",
 
     // Media Query
     [theme.breakpoints.down("sm")]: {
@@ -41,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 // Component
 const CategoryList = (props) => {
   const classes = useStyles();
-
   // Connect to firestore's collection named "category"
   useFirestoreConnect(["category"]);
   const category = useSelector((state) => {
@@ -53,9 +54,9 @@ const CategoryList = (props) => {
   };
 
   return (
-    <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
+    <Grid item xs={12}>
+      <Table aria-label="simple table" className={classes.gridRow}>
+        <TableHead className={classes.gridRow}>
           <TableRow className={classes.header}>
             <TableCell align="right" className={classes.header}>
               &nbsp;
@@ -63,9 +64,12 @@ const CategoryList = (props) => {
             <TableCell align="right" className={classes.header}>
               Name
             </TableCell>
-            <TableCell align="right" className={classes.header}>
-              Vietnamese
-            </TableCell>
+            {/* Only showing column if screen width is from "md", "lg" */}
+            {isWidthUp("sm", props.width) ? (
+              <TableCell align="right" className={classes.header}>
+                Vietnamese
+              </TableCell>
+            ) : null}
             <TableCell align="right" className={classes.header}>
               Enabled
             </TableCell>
@@ -78,6 +82,7 @@ const CategoryList = (props) => {
           {category &&
             category.map((item) => (
               <CategoryListRow
+                className={classes.gridRow}
                 key={item.id}
                 row={item}
                 onCategoryDelete={onCategoryDelete}
@@ -85,8 +90,12 @@ const CategoryList = (props) => {
             ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </Grid>
   );
+};
+
+CategoryList.propTypes = {
+  width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -95,4 +104,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CategoryList);
+export default withWidth()(connect(null, mapDispatchToProps)(CategoryList));

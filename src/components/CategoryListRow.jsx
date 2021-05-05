@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import PropTypes from "prop-types";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 import {
   TableCell,
@@ -10,6 +11,7 @@ import {
   Table,
   TableBody,
 } from "@material-ui/core";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,6 +27,7 @@ import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 const useStyles = makeStyles((theme) => ({
   cell: {
     color: Color.text,
+    gridColumnEnd: "span 2",
 
     // Media query
     [theme.breakpoints.down("sm")]: {
@@ -65,7 +68,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: Color.secondary,
     },
   },
-  subRow: {
+  gridRow: {
+    gridColumnEnd: "span 12",
+  },
+  gridSubRow: {
+    gridColumnEnd: "span 12",
     backgroundColor: lighten(Color.primary, 0.85),
   },
   subCell: {
@@ -115,8 +122,8 @@ const CategoryListRow = (props) => {
           handleAgreeDelete={handleAgreeDelete}
         />
       ) : null}
-      <TableRow>
-        <TableCell>
+      <TableRow className={classes.gridRow}>
+        <TableCell className={classes.cell}>
           <IconButton aria-label="expand row" size="small">
             {openEdit ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
@@ -129,13 +136,16 @@ const CategoryListRow = (props) => {
         >
           {row.name}
         </TableCell>
+        {/* Only showing column if screen width is from "md", "lg" */}
+        {isWidthUp("sm", props.width) ? (
+          <TableCell align="right" className={classes.cell}>
+            {row.vietnamese}
+          </TableCell>
+        ) : null}
         <TableCell align="right" className={classes.cell}>
-          {row.vietnamese}
-        </TableCell>
-        <TableCell align="right">
           <Checkbox checked={row.enable} color="primary" disabled={true} />
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" className={classes.cell}>
           <EditIcon
             className={classes.iconEdit}
             onClick={() => handleEditClick(row)}
@@ -146,7 +156,7 @@ const CategoryListRow = (props) => {
           />
         </TableCell>
       </TableRow>
-      <TableRow className={classes.subRow}>
+      <TableRow className={classes.gridSubRow}>
         <TableCell className={classes.subCell} colSpan={5}>
           <Collapse
             in={openEdit}
@@ -180,4 +190,8 @@ const CategoryListRow = (props) => {
   );
 };
 
-export default CategoryListRow;
+CategoryListRow.propTypes = {
+  width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired,
+};
+
+export default withWidth()(CategoryListRow);
