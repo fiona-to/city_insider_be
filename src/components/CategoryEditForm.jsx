@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as Width from "../_constant/width";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -22,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
 
     "& > *": {
       margin: theme.spacing(1),
-      width: "30ch",
+      width: Width.mdBox,
       textAlign: "left",
     },
 
     // Media query
     [theme.breakpoints.down("sm")]: {
       "& > *": {
-        width: "25ch",
+        width: Width.smBox,
       },
     },
   },

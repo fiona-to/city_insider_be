@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as Width from "../_constant/width";
 import * as FontSize from "../_constant/fontSize";
 
 // Styling
@@ -29,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
   form: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "30ch",
+      width: Width.mdBox,
       textAlign: "left",
     },
     // Media Query
     [theme.breakpoints.down("sm")]: {
       "& > *": {
-        width: "25ch",
+        width: Width.smBox,
       },
     },
   },
@@ -51,11 +52,11 @@ const useStyles = makeStyles((theme) => ({
   imgUrlBox: {
     color: Color.text,
     textAlign: "left",
-    width: "60ch",
+    width: Width.lgBox,
 
     // Media query
     [theme.breakpoints.down("sm")]: {
-      width: "28ch",
+      width: Width.smBox,
     },
   },
 }));
@@ -160,6 +161,8 @@ const NodeInputForm = (props) => {
             id="catType"
             value={catType}
             onChange={handleCategoryTypeChange}
+            required={true}
+            error={isRequired && !catType}
           >
             <MenuItem value="">
               <em>None</em>

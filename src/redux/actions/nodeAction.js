@@ -45,7 +45,7 @@ export const DeleteNode = (node) => {
       })
       .catch((error) => {
         dispatch({
-          type: "DELETE_NODE_ERROR",
+          type: DELETE_NODE_ERROR,
           payload: error,
         });
       });

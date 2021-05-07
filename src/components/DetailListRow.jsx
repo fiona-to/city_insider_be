@@ -20,7 +20,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
-import NodeEditForm from "./NodeEditForm";
+import DetailEditForm from "./DetailEditForm";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 // Styling
@@ -85,9 +85,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component NodeListRow
-const NodeListRow = (props) => {
-  const { row, onNodeDelete } = props;
+// Component DetailListRow
+const DetailListRow = (props) => {
+  const { row, onDetailDelete } = props;
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelDialog, setOpenDelDialog] = useState(false);
   const [deletedRow, setDeletedRow] = useState(null);
@@ -108,7 +108,7 @@ const NodeListRow = (props) => {
   };
 
   const handleAgreeDelete = () => {
-    onNodeDelete(deletedRow);
+    onDetailDelete(deletedRow);
     setDeletedRow(null);
     setOpenDelDialog(false);
   };
@@ -134,13 +134,13 @@ const NodeListRow = (props) => {
         {/* Only showing column if screen width is from "md", "lg" */}
         {isWidthUp("sm", props.width) ? (
           <TableCell align="right" className={classes.cell}>
-            {row.vietnamese}
+            {row.rating}
           </TableCell>
         ) : null}
         {/* Only showing column if screen width is from "md", "lg" */}
         {isWidthUp("sm", props.width) ? (
           <TableCell align="right" className={classes.cell}>
-            {row.catType.catName}
+            {row.nodeType.nodeName}
           </TableCell>
         ) : null}
         <TableCell align="right" className={classes.cell}>
@@ -171,7 +171,7 @@ const NodeListRow = (props) => {
                 <TableBody>
                   <TableRow>
                     <TableCell colSpan={5} className={classes.subCell}>
-                      <NodeEditForm row={row} />
+                      <DetailEditForm row={row} />
                     </TableCell>
                     <TableCell colSpan={1}>
                       <div className={classes.btnClose}>
@@ -192,8 +192,8 @@ const NodeListRow = (props) => {
   );
 };
 
-NodeListRow.propTypes = {
+DetailListRow.propTypes = {
   width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired,
 };
 
-export default withWidth()(NodeListRow);
+export default withWidth()(DetailListRow);

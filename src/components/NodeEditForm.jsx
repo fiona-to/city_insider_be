@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as Width from "../_constant/width";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -27,25 +28,25 @@ const useStyles = makeStyles((theme) => ({
 
     "& > *": {
       margin: theme.spacing(1),
-      width: "30ch",
+      width: Width.mdBox,
       textAlign: "left",
     },
 
     // Media query
     [theme.breakpoints.down("sm")]: {
       "& > *": {
-        width: "25ch",
+        width: Width.smBox,
       },
     },
   },
   imgUrlBox: {
     color: Color.text,
     textAlign: "left",
-    width: "60ch",
+    width: Width.lgBox,
 
     // Media query
     [theme.breakpoints.down("sm")]: {
-      width: "28ch",
+      width: Width.smBox,
     },
   },
 }));
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 // COMPONENT: NodeEditForm
 const NodeEditForm = (props) => {
   const classes = useStyles();
+  const { row } = props;
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [vietnamese, setVietnamese] = useState("");
@@ -62,7 +64,6 @@ const NodeEditForm = (props) => {
   const [catId, setCatId] = useState("");
   const [catName, setCatName] = useState("");
   const [isRequired, setIsRequired] = useState(false);
-  const { row } = props;
 
   // connect to firebase's firestore
   useFirestoreConnect(["category"]);
@@ -159,9 +160,11 @@ const NodeEditForm = (props) => {
         <InputLabel id="lblCatId">Category</InputLabel>
         <Select
           labelId="lblCatId"
-          id="catId"
+          id="catType"
           value={catType}
           onChange={handleCategoryTypeChange}
+          required={true}
+          error={isRequired && !catType}
         >
           <MenuItem value="">
             <em>None</em>

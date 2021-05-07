@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import * as Width from "../_constant/width";
 import * as FontSize from "../_constant/fontSize";
 
 // Styling
@@ -24,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
   form: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "30ch",
+      width: Width.mdBox,
 
       // Media Query
       [theme.breakpoints.down("sm")]: {
-        width: "25ch",
+        width: Width.smBox,
       },
     },
   },
