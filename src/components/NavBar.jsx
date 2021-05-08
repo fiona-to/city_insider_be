@@ -75,7 +75,7 @@ const NavBar = () => {
             </NavLink>
           </Typography>
 
-          <Typography className={classes.menuText}>
+          {/* <Typography className={classes.menuText}>
             <NavLink
               to="/login"
               className={classes.menuLink}
@@ -83,9 +83,9 @@ const NavBar = () => {
             >
               Login
             </NavLink>
-          </Typography>
+          </Typography> */}
 
-          <Typography className={classes.menuText}>
+          {/* <Typography className={classes.menuText}>
             <NavLink
               to="/logout"
               className={classes.menuLink}
@@ -93,7 +93,7 @@ const NavBar = () => {
             >
               Logout
             </NavLink>
-          </Typography>
+          </Typography> */}
         </Toolbar>
       </AppBar>
     </div>

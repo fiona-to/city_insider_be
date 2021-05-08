@@ -40,9 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component
+// Component: CategoryList
 const CategoryList = (props) => {
   const classes = useStyles();
+
   // Connect to firestore's collection named "category"
   useFirestoreConnect(["category"]);
   const category = useSelector((state) => {

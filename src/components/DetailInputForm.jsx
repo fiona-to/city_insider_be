@@ -101,10 +101,10 @@ const DetailInputForm = (props) => {
         nodeName: selectedNode[1],
       });
     }
-  };
 
-  const handleEnableChange = (e) => {
-    setDetail({ ...detail, enable: e.target.checked });
+    if (e.target.name === "enable") {
+      setDetail({ ...detail, enable: e.target.checked });
+    }
   };
 
   const handleClearTextFields = () => {
@@ -210,7 +210,7 @@ const DetailInputForm = (props) => {
               id="enable"
               name="enable"
               checked={detail.enable}
-              onChange={handleEnableChange}
+              onChange={handleValueChange}
               color="primary"
               inputProps={{ "aria-label": "primary checkbox" }}
             />

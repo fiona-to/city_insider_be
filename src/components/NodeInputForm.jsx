@@ -64,14 +64,16 @@ const useStyles = makeStyles((theme) => ({
 // COMPONENT: NodeInputForm
 const NodeInputForm = (props) => {
   const classes = useStyles();
-  const [name, setName] = useState("");
-  const [vietnamese, setVietnamese] = useState("");
-  const [enable, setEnable] = useState(false);
-  const [imgUrl, setImgUrl] = useState("");
-  const [catType, setCatType] = useState("");
-  const [catId, setCatId] = useState("");
-  const [catName, setCatName] = useState("");
   const [isRequired, setIsRequired] = useState(false);
+  const [node, setNode] = useState({
+    name: "",
+    vietnamese: "",
+    enable: false,
+    imgUrl: "",
+    catType: "",
+    catId: "",
+    catName: "",
+  });
 
   // connect to firebase's firestore
   useFirestoreConnect(["category"]);
@@ -79,50 +81,45 @@ const NodeInputForm = (props) => {
     return state.firestore.ordered.category;
   });
 
-  const handleNameChanged = (e) => {
-    setName(e.target.value);
-  };
+  const handleValueChange = (e) => {
+    setNode({ ...node, [e.target.name]: e.target.value });
 
-  const handleVietnameseChange = (e) => {
-    setVietnamese(e.target.value);
-  };
+    if (e.target.name === "catType") {
+      const selectedCat = e.target.value.split("-");
+      setNode({
+        ...node,
+        catType: e.target.value,
+        catId: selectedCat[0],
+        catName: selectedCat[1],
+      });
+    }
 
-  const handleEnableChange = (e) => {
-    setEnable(e.target.checked);
-  };
-
-  const handleImgUrlChange = (e) => {
-    setImgUrl(e.target.value);
-  };
-
-  const handleCategoryTypeChange = (e) => {
-    setCatType(e.target.value);
-
-    const selectedCategory = e.target.value.split("-");
-    setCatId(selectedCategory[0]);
-    setCatName(selectedCategory[1]);
+    if (e.target.name === "enable") {
+      setNode({ ...node, enable: e.target.checked });
+    }
   };
 
   const handleClearTextFields = () => {
-    setName("");
-    setVietnamese("");
-    setImgUrl("");
-    setCatType("");
-    setCatId("");
-    setCatName("");
-    setEnable(false);
-    setIsRequired(false);
+    setNode({
+      name: "",
+      vietnamese: "",
+      enable: false,
+      imgUrl: "",
+      catType: "",
+      catId: "",
+      catName: "",
+    });
   };
 
   const handleOnCreateClick = (e) => {
     e.preventDefault();
-    if (name && vietnamese && imgUrl && catId) {
+    if (node.name && node.vietnamese && node.imgUrl && node.catId) {
       props.createNode({
-        name,
-        vietnamese,
-        imgUrl,
-        enable,
-        catType: { catId, catName },
+        name: node.name,
+        vietnamese: node.vietnamese,
+        imgUrl: node.imgUrl,
+        enable: node.enable,
+        catType: { catId: node.catId, catName: node.catName },
       });
       handleClearTextFields();
     } else {
@@ -139,19 +136,21 @@ const NodeInputForm = (props) => {
       <form className={classes.form}>
         <TextField
           id="name"
+          name="name"
           label="Name"
-          value={name}
-          onChange={handleNameChanged}
+          value={node.name}
+          onChange={handleValueChange}
           required={true}
-          error={isRequired && !name}
+          error={isRequired && !node.name}
         />
         <TextField
           id="vietnamese"
+          name="vietnamese"
           label="Vietnamese"
-          value={vietnamese}
-          onChange={handleVietnameseChange}
+          value={node.vietnamese}
+          onChange={handleValueChange}
           required={true}
-          error={isRequired && !vietnamese}
+          error={isRequired && !node.vietnamese}
         />
         <br />
         <FormControl required>
@@ -159,10 +158,11 @@ const NodeInputForm = (props) => {
           <Select
             labelId="lblCatId"
             id="catType"
-            value={catType}
-            onChange={handleCategoryTypeChange}
+            name="catType"
+            value={node.catType}
+            onChange={handleValueChange}
             required={true}
-            error={isRequired && !catType}
+            error={isRequired && !node.catType}
           >
             <MenuItem value="">
               <em>None</em>
@@ -180,8 +180,10 @@ const NodeInputForm = (props) => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={enable}
-              onChange={handleEnableChange}
+              id="enable"
+              name="enable"
+              checked={node.enable}
+              onChange={handleValueChange}
               color="primary"
               inputProps={{ "aria-label": "primary checkbox" }}
             />
@@ -191,12 +193,13 @@ const NodeInputForm = (props) => {
         <br />
         <TextField
           id="imgUrl"
+          name="imgUrl"
           label="Image Url"
-          value={imgUrl}
+          value={node.imgUrl}
           className={classes.imgUrlBox}
-          onChange={handleImgUrlChange}
+          onChange={handleValueChange}
           required={true}
-          error={isRequired && !imgUrl}
+          error={isRequired && !node.imgUrl}
         />
         <br />
         <br />

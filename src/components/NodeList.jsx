@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component
+// Component: NodeList
 const NodeList = (props) => {
   const classes = useStyles();
 

@@ -53,34 +53,41 @@ const useStyles = makeStyles((theme) => ({
 // COMPONENT: CategoryInputForm
 const CategoryInputForm = (props) => {
   const classes = useStyles();
-  const [name, setName] = useState("");
-  const [vietnamese, setVietnamese] = useState("");
-  const [enable, setEnable] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
+  const [cat, setCat] = useState({
+    name: "",
+    vietnamese: "",
+    enable: false,
+  });
 
-  const handleNameChanged = (e) => {
-    setName(e.target.value);
-  };
+  const handleValueChange = (e) => {
+    setCat({
+      ...cat,
+      [e.target.name]: e.target.value,
+    });
 
-  const handleVietnameseChange = (e) => {
-    setVietnamese(e.target.value);
+    if (e.target.name === "enable") {
+      setCat({ ...cat, enable: e.target.checked });
+    }
   };
 
   const handleClearTextFields = () => {
-    setName("");
-    setVietnamese("");
-    setEnable(false);
     setIsRequired(false);
-  };
-
-  const handleEnableChange = (e) => {
-    setEnable(e.target.checked);
+    setCat({
+      name: "",
+      vietnamese: "",
+      enable: false,
+    });
   };
 
   const handleOnCreateClick = (e) => {
     e.preventDefault();
-    if (name && vietnamese) {
-      props.createCategory({ name, vietnamese, enable });
+    if (cat.name && cat.vietnamese) {
+      props.createCategory({
+        name: cat.name,
+        vietnamese: cat.vietnamese,
+        enable: cat.enable,
+      });
       handleClearTextFields();
     } else {
       setIsRequired(true);
@@ -96,25 +103,29 @@ const CategoryInputForm = (props) => {
       <form className={classes.form}>
         <TextField
           id="name"
+          name="name"
           label="Name"
-          value={name}
-          onChange={handleNameChanged}
+          value={cat.name}
+          onChange={handleValueChange}
           required={true}
-          error={isRequired && !name}
+          error={isRequired && !cat.name}
         />
         <TextField
           id="vietnamese"
+          name="vietnamese"
           label="Vietnamese"
-          value={vietnamese}
-          onChange={handleVietnameseChange}
+          value={cat.vietnamese}
+          onChange={handleValueChange}
           required={true}
-          error={isRequired && !vietnamese}
+          error={isRequired && !cat.vietnamese}
         />
         <FormControlLabel
           control={
             <Checkbox
-              checked={enable}
-              onChange={handleEnableChange}
+              id="enable"
+              name="enable"
+              checked={cat.enable}
+              onChange={handleValueChange}
               color="primary"
               inputProps={{ "aria-label": "primary checkbox" }}
             />

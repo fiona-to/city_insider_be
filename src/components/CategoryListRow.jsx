@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component
+// Component: CategoryListRow
 const CategoryListRow = (props) => {
   const { row, onCategoryDelete } = props;
   const [openEdit, setOpenEdit] = useState(false);

@@ -10,6 +10,7 @@ import NodeList from "../components/NodeList";
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
 
+// Styling
 const useStyles = makeStyles((theme) => ({
   iconAdd: {
     fontSize: FontSize.hugeIcon,
