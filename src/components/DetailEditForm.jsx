@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect, useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { UpdateDetail } from "../redux/actions/detailAction";
@@ -17,6 +17,7 @@ import {
 
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -66,6 +67,7 @@ const DetailEditForm = (props) => {
   const classes = useStyles();
   const { row } = props;
   const [isRequired, setIsRequired] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [detail, setDetail] = useState({
     id: null,
     name: "",
@@ -134,6 +136,10 @@ const DetailEditForm = (props) => {
     setIsRequired(false);
   };
 
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
+  };
+
   const handleOnUpdateClick = (e) => {
     e.preventDefault();
     if (
@@ -143,22 +149,28 @@ const DetailEditForm = (props) => {
       detail.description &&
       detail.nodeId
     ) {
-      props.updateDetail({
-        id: detail.id,
-        payload: {
-          name: detail.name,
-          rating: detail.rating,
-          enable: detail.enable,
-          imgUrl: detail.imgUrl,
-          address: detail.address,
-          description: detail.description,
-          nodeType: {
-            nodeId: detail.nodeId,
-            nodeName: detail.nodeName,
+      if (props.isSignIn) {
+        props.updateDetail({
+          id: detail.id,
+          payload: {
+            name: detail.name,
+            rating: detail.rating,
+            enable: detail.enable,
+            imgUrl: detail.imgUrl,
+            address: detail.address,
+            description: detail.description,
+            nodeType: {
+              nodeId: detail.nodeId,
+              nodeName: detail.nodeName,
+            },
           },
-        },
-      });
-      handleClearTextFields();
+        });
+        setOpenAlert(false);
+        handleClearTextFields();
+      } else {
+        setOpenAlert(true);
+        return;
+      }
     } else {
       setIsRequired(true);
       return;
@@ -166,117 +178,135 @@ const DetailEditForm = (props) => {
   };
 
   return (
-    <form className={classes.form}>
-      <TextField
-        id="name"
-        label="Name"
-        name="name"
-        value={detail.name}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !detail.name}
-      />
-      <FormControl required>
-        <InputLabel id="lblNodeId">Node</InputLabel>
-        <Select
-          labelId="lblNodeId"
-          id="nodeType"
-          name="nodeType"
-          value={detail.nodeType}
+    <Fragment>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
+      <form className={classes.form}>
+        <TextField
+          id="name"
+          label="Name"
+          name="name"
+          value={detail.name}
           onChange={handleValueChange}
           required={true}
-          error={isRequired && !detail.nodeType}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {nodes &&
-            nodes.map((item) => {
-              return (
-                <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
-                  {item.name}
-                </MenuItem>
-              );
-            })}
-        </Select>
-      </FormControl>
-      <br />
-      <TextField
-        id="rating"
-        name="rating"
-        value={detail.rating}
-        type="number"
-        onChange={handleValueChange}
-        InputProps={{
-          inputProps: {
-            max: 5,
-            min: 1,
-          },
-        }}
-        label="Rating"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="enable"
-            name="enable"
-            checked={detail.enable}
+          error={isRequired && !detail.name}
+        />
+        <FormControl required>
+          <InputLabel id="lblNodeId">Node</InputLabel>
+          <Select
+            labelId="lblNodeId"
+            id="nodeType"
+            name="nodeType"
+            value={detail.nodeType}
             onChange={handleValueChange}
-            color="primary"
-            inputProps={{ "aria-label": "primary checkbox" }}
-          />
-        }
-        label="Enabled"
-        className={classes.checkbox}
-      />
-      <br />
-      <TextField
-        id="imgUrl"
-        name="imgUrl"
-        label="Image Url"
-        value={detail.imgUrl}
-        className={classes.lgTextBox}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !detail.imgUrl}
-      />
-      <br />
-      <TextField
-        id="address"
-        name="address"
-        label="Address"
-        value={detail.address}
-        className={classes.lgTextBox}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !detail.address}
-      />
-      <br />
-      <TextField
-        id="description"
-        name="description"
-        label="Description"
-        value={detail.description}
-        className={classes.lgTextBox}
-        onChange={handleValueChange}
-        multiline
-        rows={4}
-        required={true}
-        error={isRequired && !detail.description}
-      />
-      <br />
-      <Button variant="contained" color="primary" onClick={handleOnUpdateClick}>
-        Update
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleClearTextFields}
-      >
-        Clear
-      </Button>
-    </form>
+            required={true}
+            error={isRequired && !detail.nodeType}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {nodes &&
+              nodes.map((item) => {
+                return (
+                  <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        </FormControl>
+        <br />
+        <TextField
+          id="rating"
+          name="rating"
+          value={detail.rating}
+          type="number"
+          onChange={handleValueChange}
+          InputProps={{
+            inputProps: {
+              max: 5,
+              min: 1,
+            },
+          }}
+          label="Rating"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="enable"
+              name="enable"
+              checked={detail.enable}
+              onChange={handleValueChange}
+              color="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          }
+          label="Enabled"
+          className={classes.checkbox}
+        />
+        <br />
+        <TextField
+          id="imgUrl"
+          name="imgUrl"
+          label="Image Url"
+          value={detail.imgUrl}
+          className={classes.lgTextBox}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !detail.imgUrl}
+        />
+        <br />
+        <TextField
+          id="address"
+          name="address"
+          label="Address"
+          value={detail.address}
+          className={classes.lgTextBox}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !detail.address}
+        />
+        <br />
+        <TextField
+          id="description"
+          name="description"
+          label="Description"
+          value={detail.description}
+          className={classes.lgTextBox}
+          onChange={handleValueChange}
+          multiline
+          rows={4}
+          required={true}
+          error={isRequired && !detail.description}
+        />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOnUpdateClick}
+        >
+          Update
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleClearTextFields}
+        >
+          Clear
+        </Button>
+      </form>
+    </Fragment>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -285,4 +315,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(DetailEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailEditForm);

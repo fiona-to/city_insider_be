@@ -19,6 +19,7 @@ import {
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
 import * as FontSize from "../_constant/fontSize";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 const DetailInputForm = (props) => {
   const classes = useStyles();
   const [isRequired, setIsRequired] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [detail, setDetail] = useState({
     name: "",
     rating: 1,
@@ -122,6 +124,10 @@ const DetailInputForm = (props) => {
     setIsRequired(false);
   };
 
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
+  };
+
   const handleOnCreateClick = (e) => {
     e.preventDefault();
     if (
@@ -131,19 +137,25 @@ const DetailInputForm = (props) => {
       detail.description &&
       detail.nodeId
     ) {
-      props.createDetail({
-        name: detail.name,
-        rating: detail.rating,
-        enable: detail.enable,
-        imgUrl: detail.imgUrl,
-        address: detail.address,
-        description: detail.description,
-        nodeType: {
-          nodeId: detail.nodeId,
-          nodeName: detail.nodeName,
-        },
-      });
-      handleClearTextFields();
+      if (props.isSignIn) {
+        props.createDetail({
+          name: detail.name,
+          rating: detail.rating,
+          enable: detail.enable,
+          imgUrl: detail.imgUrl,
+          address: detail.address,
+          description: detail.description,
+          nodeType: {
+            nodeId: detail.nodeId,
+            nodeName: detail.nodeName,
+          },
+        });
+        setOpenAlert(false);
+        handleClearTextFields();
+      } else {
+        setOpenAlert(true);
+        return;
+      }
     } else {
       setIsRequired(true);
       return;
@@ -152,6 +164,12 @@ const DetailInputForm = (props) => {
 
   return (
     <div className={classes.container}>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
       <Typography variant="h5" className={classes.header}>
         Details
       </Typography>
@@ -273,10 +291,16 @@ const DetailInputForm = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     createDetail: (detail) => dispatch(CreateDetail(detail)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(DetailInputForm);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailInputForm);

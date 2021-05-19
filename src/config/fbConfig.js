@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-//import "firebase/database";
+import "firebase/auth";
+import "firebase/database";
 
 // Firebse's config
 export const fbConfig = {
@@ -18,6 +19,7 @@ export const fbConfig = {
 try {
   firebase.initializeApp(fbConfig);
   firebase.firestore();
+  firebase.auth();
 } catch (e) {
   console.log("Initialize firebase app ERROR: ", e);
 }

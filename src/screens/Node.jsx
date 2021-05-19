@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 import { TableCell, TableRow, Table, TableBody } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -82,4 +83,10 @@ const Node = () => {
   );
 };
 
-export default Node;
+const mapStateToProps = (state) => {
+  return {
+    fbAuth: state.firebase.auth,
+  };
+};
+
+export default connect(mapStateToProps)(Node);

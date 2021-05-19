@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 import {
@@ -22,6 +23,7 @@ import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
 import NodeEditForm from "./NodeEditForm";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -91,6 +93,7 @@ const NodeListRow = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelDialog, setOpenDelDialog] = useState(false);
   const [deletedRow, setDeletedRow] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
   const classes = useStyles();
 
   const handleEditClick = (row) => {
@@ -98,8 +101,14 @@ const NodeListRow = (props) => {
   };
 
   const handleDeleteButtonClick = (row) => {
-    setDeletedRow(row);
-    setOpenDelDialog(true);
+    if (props.isSignIn) {
+      setDeletedRow(row);
+      setOpenAlert(false);
+      setOpenDelDialog(true);
+    } else {
+      setOpenAlert(true);
+      return;
+    }
   };
 
   const handleCancelDeleteClick = () => {
@@ -113,8 +122,18 @@ const NodeListRow = (props) => {
     setOpenDelDialog(false);
   };
 
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
+  };
+
   return (
     <Fragment>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
       {openDelDialog ? (
         <ConfirmDeleteDialog
           open={openDelDialog}
@@ -196,4 +215,10 @@ NodeListRow.propTypes = {
   width: PropTypes.oneOf(["lg", "md", "sm", "xl", "xs"]).isRequired,
 };
 
-export default withWidth()(NodeListRow);
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
+};
+
+export default withWidth()(connect(mapStateToProps)(NodeListRow));

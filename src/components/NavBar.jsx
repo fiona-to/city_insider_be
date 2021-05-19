@@ -1,9 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { signOut } from "../redux/actions/authAction";
 
-import AppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
@@ -39,8 +40,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // Component
-const NavBar = () => {
+const NavBar = (props) => {
   const classes = useStyles();
+  const { fbAuth } = props;
+  const onSignOutClick = () => {
+    props.signOut();
+  };
+
+  const authLink = !fbAuth.uid ? (
+    <Typography className={classes.menuText}>
+      <NavLink
+        to="/signin"
+        className={classes.menuLink}
+        activeClassName={classes.selectedLink}
+      >
+        Log In
+      </NavLink>
+    </Typography>
+  ) : (
+    <Typography className={classes.menuText}>
+      <a className={classes.menuLink} onClick={onSignOutClick}>
+        Log Out
+      </a>
+    </Typography>
+  );
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -75,29 +99,23 @@ const NavBar = () => {
             </NavLink>
           </Typography>
 
-          {/* <Typography className={classes.menuText}>
-            <NavLink
-              to="/login"
-              className={classes.menuLink}
-              activeClassName={classes.selectedLink}
-            >
-              Login
-            </NavLink>
-          </Typography> */}
-
-          {/* <Typography className={classes.menuText}>
-            <NavLink
-              to="/logout"
-              className={classes.menuLink}
-              activeClassName={classes.selectedLink}
-            >
-              Logout
-            </NavLink>
-          </Typography> */}
+          {authLink}
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    fbAuth: state.firebase.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOut: () => dispatch(signOut()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

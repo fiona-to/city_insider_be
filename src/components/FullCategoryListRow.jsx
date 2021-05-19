@@ -14,12 +14,14 @@ import {
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import CloseIcon from "@material-ui/icons/Close";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
 import CategoryEditForm from "./CategoryEditForm";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -85,16 +87,41 @@ const useStyles = makeStyles((theme) => ({
 
 // Component: CategoryListRow
 const CategoryListRow = (props) => {
-  const { row } = props;
+  const { row, onCategoryDelete } = props;
   const [openEdit, setOpenEdit] = useState(false);
+  const [openDelDialog, setOpenDelDialog] = useState(false);
+  const [deletedRow, setDeletedRow] = useState(null);
   const classes = useStyles();
 
   const handleEditClick = (row) => {
     setOpenEdit(!openEdit);
   };
 
+  const handleDeleteButtonClick = (row) => {
+    setDeletedRow(row);
+    setOpenDelDialog(true);
+  };
+
+  const handleCancelDeleteClick = () => {
+    setDeletedRow(null);
+    setOpenDelDialog(false);
+  };
+
+  const handleAgreeDelete = () => {
+    onCategoryDelete(deletedRow);
+    setDeletedRow(null);
+    setOpenDelDialog(false);
+  };
+
   return (
     <Fragment>
+      {openDelDialog ? (
+        <ConfirmDeleteDialog
+          open={openDelDialog}
+          handleCancelDeleteClick={handleCancelDeleteClick}
+          handleAgreeDelete={handleAgreeDelete}
+        />
+      ) : null}
       <TableRow className={classes.gridRow}>
         <TableCell className={classes.cell}>
           <IconButton aria-label="expand row" size="small">
@@ -122,6 +149,10 @@ const CategoryListRow = (props) => {
           <EditIcon
             className={classes.iconEdit}
             onClick={() => handleEditClick(row)}
+          />
+          <DeleteIcon
+            className={classes.iconDel}
+            onClick={() => handleDeleteButtonClick(row)}
           />
         </TableCell>
       </TableRow>

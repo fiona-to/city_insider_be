@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { makeStyles, lighten } from "@material-ui/core/styles";
-import { TableCell, TableRow, Table, TableBody } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import CloseIcon from "@material-ui/icons/Close";
+import { TableCell, TableRow, Table, TableBody } from "@material-ui/core";
+
+import CategoryInputForm from "../components/CategoryInputForm";
+import CategoryList from "../components/CategoryList";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
-import DetialInputForm from "../components/DetailInputForm";
-import DetailList from "../components/DetailList";
 
+// Styling
 const useStyles = makeStyles((theme) => ({
+  container: {},
   iconAdd: {
     fontSize: FontSize.hugeIcon,
     margin: "20px auto",
@@ -43,10 +46,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT: Detail
-const Detail = () => {
+// COMPONENT: Category
+const Category = () => {
   const classes = useStyles();
   const [isAdd, setIsAdd] = useState(false);
+
   return (
     <div>
       {isAdd ? (
@@ -54,7 +58,7 @@ const Detail = () => {
           <TableBody>
             <TableRow>
               <TableCell colSpan={4}>
-                <DetialInputForm />
+                <CategoryInputForm />
               </TableCell>
               <TableCell colSpan={1}>
                 <div className={classes.closeBtn}>
@@ -75,7 +79,7 @@ const Detail = () => {
           }}
         />
       )}
-      <DetailList />
+      <CategoryList />
     </div>
   );
 };
@@ -86,4 +90,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Detail);
+export default connect(mapStateToProps)(Category);

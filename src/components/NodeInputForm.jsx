@@ -18,6 +18,7 @@ import {
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
 import * as FontSize from "../_constant/fontSize";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
 const NodeInputForm = (props) => {
   const classes = useStyles();
   const [isRequired, setIsRequired] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [node, setNode] = useState({
     name: "",
     vietnamese: "",
@@ -109,19 +111,30 @@ const NodeInputForm = (props) => {
       catId: "",
       catName: "",
     });
+    setIsRequired(false);
+  };
+
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
   };
 
   const handleOnCreateClick = (e) => {
     e.preventDefault();
     if (node.name && node.vietnamese && node.imgUrl && node.catId) {
-      props.createNode({
-        name: node.name,
-        vietnamese: node.vietnamese,
-        imgUrl: node.imgUrl,
-        enable: node.enable,
-        catType: { catId: node.catId, catName: node.catName },
-      });
-      handleClearTextFields();
+      if (props.isSignIn) {
+        props.createNode({
+          name: node.name,
+          vietnamese: node.vietnamese,
+          imgUrl: node.imgUrl,
+          enable: node.enable,
+          catType: { catId: node.catId, catName: node.catName },
+        });
+        setOpenAlert(false);
+        handleClearTextFields();
+      } else {
+        setOpenAlert(true);
+        return;
+      }
     } else {
       setIsRequired(true);
       return;
@@ -130,6 +143,12 @@ const NodeInputForm = (props) => {
 
   return (
     <div className={classes.container}>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
       <Typography variant="h5" className={classes.header}>
         Node
       </Typography>
@@ -222,10 +241,16 @@ const NodeInputForm = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     createNode: (node) => dispatch(CreateNode(node)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(NodeInputForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NodeInputForm);

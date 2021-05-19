@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Category from "./Category";
 import Node from "./Node";
 import Detail from "./Detail";
+import SignIn from "./SignIn";
 import PageNotFound from "./PageNotFound";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -23,6 +24,7 @@ const Dashboard = () => {
         <Route path="/category" component={Category} />
         <Route path="/node" component={Node} />
         <Route path="/detail" component={Detail} />
+        <Route path="/signin" component={SignIn} />
         <Route path="*" component={PageNotFound} />
       </Switch>
     </div>

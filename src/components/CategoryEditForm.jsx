@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import { UpdateCategory } from "../redux/actions/categoryAction";
 
@@ -12,6 +12,7 @@ import {
 
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -41,15 +42,16 @@ const useStyles = makeStyles((theme) => ({
 
 // COMPONENT: CategoryEditForm
 const CategoryEditForm = (props) => {
+  const { row } = props;
   const classes = useStyles();
   const [isRequired, setIsRequired] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [cat, setCat] = useState({
     id: null,
     name: "",
     vietnamese: "",
     enable: false,
   });
-  const { row } = props;
 
   useEffect(() => {
     setCat({
@@ -73,16 +75,26 @@ const CategoryEditForm = (props) => {
     setCat({ ...cat, name: "", vietnamese: "", enable: false });
   };
 
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
+  };
+
   const handleOnUpdateClick = (e) => {
     e.preventDefault();
     if (cat.name && cat.vietnamese) {
-      props.updateCategory({
-        id: cat.id,
-        name: cat.name,
-        vietnamese: cat.vietnamese,
-        enable: cat.enable,
-      });
-      handleClearTextFields();
+      if (props.isSignIn) {
+        props.updateCategory({
+          id: cat.id,
+          name: cat.name,
+          vietnamese: cat.vietnamese,
+          enable: cat.enable,
+        });
+        setOpenAlert(false);
+        handleClearTextFields();
+      } else {
+        setOpenAlert(true);
+        return;
+      }
     } else {
       setIsRequired(true);
       return;
@@ -90,53 +102,71 @@ const CategoryEditForm = (props) => {
   };
 
   return (
-    <form className={classes.form}>
-      <TextField
-        id="name"
-        name="name"
-        label="Name"
-        value={cat.name}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !cat.name}
-      />
-      <TextField
-        id="vietnamese"
-        name="vietnamese"
-        label="Vietnamese"
-        value={cat.vietnamese}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !cat.vietnamese}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="enable"
-            name="enable"
-            checked={cat.enable}
-            onChange={handleValueChange}
-            color="primary"
-            inputProps={{ "aria-label": "primary checkbox" }}
-          />
-        }
-        label="Enabled"
-        className={classes.checkbox}
-      />
-      <br />
-      <br />
-      <Button variant="contained" color="primary" onClick={handleOnUpdateClick}>
-        Update
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleClearTextFields}
-      >
-        Clear
-      </Button>
-    </form>
+    <Fragment>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
+      <form className={classes.form}>
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          value={cat.name}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !cat.name}
+        />
+        <TextField
+          id="vietnamese"
+          name="vietnamese"
+          label="Vietnamese"
+          value={cat.vietnamese}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !cat.vietnamese}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="enable"
+              name="enable"
+              checked={cat.enable}
+              onChange={handleValueChange}
+              color="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          }
+          label="Enabled"
+          className={classes.checkbox}
+        />
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOnUpdateClick}
+        >
+          Update
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleClearTextFields}
+        >
+          Clear
+        </Button>
+      </form>
+    </Fragment>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -145,4 +175,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CategoryEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryEditForm);

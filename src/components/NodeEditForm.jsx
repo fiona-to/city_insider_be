@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect, useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { UpdateNode } from "../redux/actions/nodeAction";
@@ -17,6 +17,7 @@ import {
 
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
+import PermissionAlert from "./PermissionAlert";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ const NodeEditForm = (props) => {
   const classes = useStyles();
   const { row } = props;
   const [isRequired, setIsRequired] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [node, setNode] = useState({
     id: null,
     name: "",
@@ -117,20 +119,30 @@ const NodeEditForm = (props) => {
     setIsRequired(false);
   };
 
+  const handleAlertDialogCancel = () => {
+    setOpenAlert(false);
+  };
+
   const handleOnUpdateClick = (e) => {
     e.preventDefault();
     if (node.name && node.vietnamese && node.imgUrl && node.catId) {
-      props.updateNode({
-        id: node.id,
-        payload: {
-          name: node.name,
-          vietnamese: node.vietnamese,
-          imgUrl: node.imgUrl,
-          enable: node.enable,
-          catType: { catId: node.catId, catName: node.catName },
-        },
-      });
-      handleClearTextFields();
+      if (props.isSignIn) {
+        props.updateNode({
+          id: node.id,
+          payload: {
+            name: node.name,
+            vietnamese: node.vietnamese,
+            imgUrl: node.imgUrl,
+            enable: node.enable,
+            catType: { catId: node.catId, catName: node.catName },
+          },
+        });
+        setOpenAlert(false);
+        handleClearTextFields();
+      } else {
+        setOpenAlert(true);
+        return;
+      }
     } else {
       setIsRequired(true);
       return;
@@ -138,88 +150,106 @@ const NodeEditForm = (props) => {
   };
 
   return (
-    <form className={classes.form}>
-      <TextField
-        id="name"
-        name="name"
-        label="Name"
-        value={node.name}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !node.name}
-      />
-      <TextField
-        id="vietnamese"
-        name="vietnamese"
-        label="Vietnamese"
-        value={node.vietnamese}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !node.vietnamese}
-      />
-      <br />
-      <FormControl required>
-        <InputLabel id="lblCatId">Category</InputLabel>
-        <Select
-          labelId="lblCatId"
-          id="catType"
-          name="catType"
-          value={node.catType}
+    <Fragment>
+      {openAlert ? (
+        <PermissionAlert
+          open={openAlert}
+          handleCancelClick={handleAlertDialogCancel}
+        />
+      ) : null}
+      <form className={classes.form}>
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          value={node.name}
           onChange={handleValueChange}
           required={true}
-          error={isRequired && !node.catType}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {categories &&
-            categories.map((item) => {
-              return (
-                <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
-                  {item.name}
-                </MenuItem>
-              );
-            })}
-        </Select>
-      </FormControl>
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="enable"
-            name="enable"
-            checked={node.enable}
+          error={isRequired && !node.name}
+        />
+        <TextField
+          id="vietnamese"
+          name="vietnamese"
+          label="Vietnamese"
+          value={node.vietnamese}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !node.vietnamese}
+        />
+        <br />
+        <FormControl required>
+          <InputLabel id="lblCatId">Category</InputLabel>
+          <Select
+            labelId="lblCatId"
+            id="catType"
+            name="catType"
+            value={node.catType}
             onChange={handleValueChange}
-            color="primary"
-            inputProps={{ "aria-label": "primary checkbox" }}
-          />
-        }
-        label="Enabled"
-      />
-      <br />
-      <TextField
-        id="imgUrl"
-        name="imgUrl"
-        label="Image Url"
-        value={node.imgUrl}
-        className={classes.imgUrlBox}
-        onChange={handleValueChange}
-        required={true}
-        error={isRequired && !node.imgUrl}
-      />
-      <br />
-      <br />
-      <Button variant="contained" color="primary" onClick={handleOnUpdateClick}>
-        Update
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleClearTextFields}
-      >
-        Clear
-      </Button>
-    </form>
+            required={true}
+            error={isRequired && !node.catType}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {categories &&
+              categories.map((item) => {
+                return (
+                  <MenuItem key={item.id} value={`${item.id}-${item.name}`}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="enable"
+              name="enable"
+              checked={node.enable}
+              onChange={handleValueChange}
+              color="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          }
+          label="Enabled"
+        />
+        <br />
+        <TextField
+          id="imgUrl"
+          name="imgUrl"
+          label="Image Url"
+          value={node.imgUrl}
+          className={classes.imgUrlBox}
+          onChange={handleValueChange}
+          required={true}
+          error={isRequired && !node.imgUrl}
+        />
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOnUpdateClick}
+        >
+          Update
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleClearTextFields}
+        >
+          Clear
+        </Button>
+      </form>
+    </Fragment>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    isSignIn: state.firebase.auth.uid ? true : false,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -228,4 +258,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(NodeEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NodeEditForm);

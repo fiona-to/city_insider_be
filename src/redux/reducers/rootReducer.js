@@ -3,11 +3,11 @@ import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
 
 import CategoryReducer from "./categoryReducer";
-import NodeReducer from "./nodeReducer";
+import AuthReducer from "./authReducer";
 
 const RootReducer = combineReducers({
   category: CategoryReducer,
-  node: NodeReducer,
+  auth: AuthReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
 });
