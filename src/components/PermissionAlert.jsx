@@ -5,8 +5,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button,
 } from "@material-ui/core";
+import SecondaryButton from "./SecondaryButton";
 
 // component: PermissionAlert
 const PermissionAlert = (props) => {
@@ -35,14 +35,7 @@ const PermissionAlert = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          color="primary"
-          variant="contained"
-          autoFocus
-        >
-          Cancel
-        </Button>
+        <SecondaryButton text="Cancel" onClick={handleClose} autoFocus />
       </DialogActions>
     </Dialog>
   );

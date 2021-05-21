@@ -4,7 +4,6 @@ import { useFirestoreConnect } from "react-redux-firebase";
 import { CreateNode } from "../redux/actions/nodeAction";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Button,
   Typography,
   TextField,
   Checkbox,
@@ -19,6 +18,8 @@ import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
 import * as FontSize from "../_constant/fontSize";
 import PermissionAlert from "./PermissionAlert";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -222,20 +223,8 @@ const NodeInputForm = (props) => {
         />
         <br />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnCreateClick}
-        >
-          Create
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearTextFields}
-        >
-          Clear
-        </Button>
+        <PrimaryButton text="Create" onClick={handleOnCreateClick} />
+        <SecondaryButton text="Clear" onClick={handleClearTextFields} />
       </form>
     </div>
   );

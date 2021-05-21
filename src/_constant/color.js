@@ -1,5 +1,7 @@
-export const primary = "#3f51b5"; // indigo
-export const secondary = "#f50057"; // pink
+export const primary = "#96bb7c"; // light-green
+export const secondary = "#ff7b54"; // pink-orange
+export const menuText = "#212121"; // black
 export const text = "#424242"; // grey
-export const green = "#357a38";
-export const errMsg = "#f44336";
+export const green = "#96bb7c"; // light-green
+export const errMsg = "#f44336"; // red
+export const white = "#ffffff"; // white

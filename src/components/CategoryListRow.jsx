@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
   cell: {
     color: Color.text,
     gridColumnEnd: "span 2",
+    gridRowGap: "wrap",
+    maxWidth: "150px",
 
     // Media query
     [theme.breakpoints.down("sm")]: {

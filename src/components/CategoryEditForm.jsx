@@ -3,16 +3,13 @@ import { connect } from "react-redux";
 import { UpdateCategory } from "../redux/actions/categoryAction";
 
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-} from "@material-ui/core";
+import { TextField, Checkbox, FormControlLabel } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
 import PermissionAlert from "./PermissionAlert";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +87,6 @@ const CategoryEditForm = (props) => {
           enable: cat.enable,
         });
         setOpenAlert(false);
-        handleClearTextFields();
       } else {
         setOpenAlert(true);
         return;
@@ -144,20 +140,8 @@ const CategoryEditForm = (props) => {
         />
         <br />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnUpdateClick}
-        >
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearTextFields}
-        >
-          Clear
-        </Button>
+        <PrimaryButton text="Update" onClick={handleOnUpdateClick} />
+        <SecondaryButton text="Clear" onClick={handleClearTextFields} />
       </form>
     </Fragment>
   );

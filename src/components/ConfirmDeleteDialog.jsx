@@ -5,8 +5,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button,
 } from "@material-ui/core";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 
 // component: ConfirmDeleteDialog
 const ConfirmDeleteDialog = (props) => {
@@ -42,21 +43,8 @@ const ConfirmDeleteDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleAgreeDelete}
-          color="secondary"
-          variant="contained"
-        >
-          Agree
-        </Button>
-        <Button
-          onClick={handleClose}
-          color="primary"
-          variant="contained"
-          autoFocus
-        >
-          Cancel
-        </Button>
+        <SecondaryButton text="Agree" onClick={handleAgreeDelete} />
+        <PrimaryButton text="Cancel" onClick={handleClose} autoFocus />
       </DialogActions>
     </Dialog>
   );

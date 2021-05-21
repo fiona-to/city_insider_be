@@ -5,7 +5,6 @@ import { UpdateDetail } from "../redux/actions/detailAction";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Button,
   TextField,
   Checkbox,
   Select,
@@ -18,6 +17,8 @@ import {
 import * as Color from "../_constant/color";
 import * as Width from "../_constant/width";
 import PermissionAlert from "./PermissionAlert";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -166,7 +167,6 @@ const DetailEditForm = (props) => {
           },
         });
         setOpenAlert(false);
-        handleClearTextFields();
       } else {
         setOpenAlert(true);
         return;
@@ -284,20 +284,8 @@ const DetailEditForm = (props) => {
           error={isRequired && !detail.description}
         />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnUpdateClick}
-        >
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearTextFields}
-        >
-          Clear
-        </Button>
+        <PrimaryButton text="Update" onClick={handleOnUpdateClick} />
+        <SecondaryButton text="Clear" onClick={handleClearTextFields} />
       </form>
     </Fragment>
   );

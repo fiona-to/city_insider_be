@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signIn } from "../redux/actions/authAction";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Typography } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 
 import * as Color from "../_constant/color";
+import PrimaryButton from "../components/PrimaryButton";
+import SecondaryButton from "../components/SecondaryButton";
 
 // Styling
 const useStyles = makeStyles((theme) => ({
@@ -93,20 +95,8 @@ const SignIn = (props) => {
         />
         <br />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOnLoginClick}
-        >
-          Login
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleClearField}
-        >
-          Clear
-        </Button>
+        <PrimaryButton text="Login" onClick={handleOnLoginClick} />
+        <SecondaryButton text="Clear" onClick={handleClearField} />
       </form>
     </div>
   );
