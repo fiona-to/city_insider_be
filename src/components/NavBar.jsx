@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import { signOut } from "../redux/actions/authAction";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Avatar } from "@material-ui/core";
+import { AppBar, Toolbar, Avatar, Tooltip } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import KeyboardReturnIcon from "@material-ui/icons/KeyboardReturn";
 
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
@@ -38,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     alignSelf: "center",
   },
-  logOut: {
+  logInOut: {
+    color: Color.menuText,
+
     "&:hover": {
       color: Color.secondary,
       cursor: "pointer",
@@ -97,22 +100,34 @@ const NavBar = (props) => {
   };
 
   const authLink = !fbAuth.uid ? (
-    <NavLink
-      to="/signin"
-      className={classes.menuLink}
-      activeClassName={classes.selectedLink}
-    >
-      Log In
-    </NavLink>
+    <div className={classes.menuAuth}>
+      <div className={classes.menuAuth__item}>
+        <Avatar alt="Guest" src={profile.imgUrl} className={classes.avatar} />
+      </div>
+      <div className={classes.menuAuth__item}>Hi Guest</div>
+      <div className={classes.menuAuth__item}>
+        <NavLink to="/signin" className={classes.logInOut}>
+          <Tooltip title="Log In" aria-label="login">
+            <KeyboardReturnIcon />
+          </Tooltip>
+        </NavLink>
+      </div>
+    </div>
   ) : (
     <div className={classes.menuAuth}>
       <div className={classes.menuAuth__item}>
-        <Avatar alt="FT" src={profile.imgUrl} className={classes.avatar} />
+        <Avatar
+          alt={profile.initials}
+          src={profile.imgUrl}
+          className={classes.avatar}
+        />
       </div>
-      <div className={classes.menuAuth__item}>Hello {profile.firstName}</div>
+      <div className={classes.menuAuth__item}>Hi {profile.firstName}</div>
       <div className={classes.menuAuth__item}>
-        <a className={classes.logOut} onClick={onSignOutClick}>
-          <ExitToAppIcon />
+        <a className={classes.logInOut} onClick={onSignOutClick}>
+          <Tooltip title="Log Out" aria-label="logout">
+            <ExitToAppIcon />
+          </Tooltip>
         </a>
       </div>
     </div>
