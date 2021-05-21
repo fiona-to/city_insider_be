@@ -1,10 +1,10 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "City Insider",
+  "name": "City Insider",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "https://res.cloudinary.com/giato/image/upload/v1621607253/CityInsiderLogo_ovybt7.png",
+      "sizes": "32x32",
       "type": "image/x-icon"
     }
   ],
