@@ -122,7 +122,8 @@ const NavBar = (props) => {
   const classes = useStyles();
   const { fbAuth, profile } = props;
 
-  const onSignOutClick = () => {
+  const onSignOutClick = (e) => {
+    e.preventDefault();
     props.signOut();
   };
 
@@ -159,7 +160,11 @@ const NavBar = (props) => {
         Hi {profile.firstName}
       </div>
       <div className={classes.menuAuth__item}>
-        <a className={classes.menuAuth__logInOut} onClick={onSignOutClick}>
+        <a
+          className={classes.menuAuth__logInOut}
+          onClick={onSignOutClick}
+          href="/"
+        >
           <Tooltip title="Log Out" aria-label="logout">
             <ExitToAppIcon />
           </Tooltip>
@@ -203,7 +208,7 @@ const NavBar = (props) => {
               <NavLink
                 to="/detail"
                 className={classes.menuItem__link}
-                activeClassName={classes.selectedLink}
+                activeClassName={classes.menuLink__selected}
               >
                 Detail
               </NavLink>

@@ -2,8 +2,19 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signIn } from "../redux/actions/authAction";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Typography } from "@material-ui/core";
+import {
+  TextField,
+  Typography,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import * as Color from "../_constant/color";
 import PrimaryButton from "../components/PrimaryButton";
@@ -29,12 +40,16 @@ const useStyles = makeStyles((theme) => ({
     color: Color.errMsg,
     margin: "20px auto",
   },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));
 
 // Component
 const SignIn = (props) => {
   const classes = useStyles();
   const [isRequired, setIsRequired] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [credential, setCredential] = useState({
     email: "",
     password: "",
@@ -42,6 +57,10 @@ const SignIn = (props) => {
 
   const handleValueChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleClearField = () => {
@@ -83,16 +102,26 @@ const SignIn = (props) => {
           error={isRequired && !credential.email}
         />
         <br />
-        <TextField
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={credential.password}
-          onChange={handleValueChange}
-          required={true}
-          error={isRequired && !credential.password}
-        />
+        <FormControl className={clsx(classes.margin, classes.textField)}>
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            value={credential.password}
+            onChange={handleValueChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
         <br />
         <br />
         <PrimaryButton text="Login" onClick={handleOnLoginClick} />
