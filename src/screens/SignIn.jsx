@@ -110,6 +110,8 @@ const SignIn = (props) => {
             type={showPassword ? "text" : "password"}
             value={credential.password}
             onChange={handleValueChange}
+            required={true}
+            error={isRequired && !credential.password}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
