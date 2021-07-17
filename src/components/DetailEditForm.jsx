@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import firebase from "firebase";
 import { connect, useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { UpdateDetail } from "../redux/actions/detailAction";
@@ -80,6 +81,8 @@ const DetailEditForm = (props) => {
     nodeType: "",
     nodeId: "",
     nodeName: "",
+    lat: "",
+    long: "",
   });
 
   // connect to firebase's firestore
@@ -100,6 +103,8 @@ const DetailEditForm = (props) => {
       nodeId: row.nodeType.nodeId,
       nodeName: row.nodeType.nodeName,
       nodeType: `${row.nodeType.nodeId}-${row.nodeType.nodeName}`,
+      lat: row.coordinate ? row.coordinate.latitude : "",
+      long: row.coordinate ? row.coordinate.longitude : "",
     });
   }, [row]);
 
@@ -133,6 +138,8 @@ const DetailEditForm = (props) => {
       nodeType: "",
       nodeId: "",
       nodeName: "",
+      lat: "",
+      long: "",
     });
     setIsRequired(false);
   };
@@ -164,6 +171,10 @@ const DetailEditForm = (props) => {
               nodeId: detail.nodeId,
               nodeName: detail.nodeName,
             },
+            coordinate: new firebase.firestore.GeoPoint(
+              Number(detail.lat),
+              Number(detail.long)
+            ),
           },
         });
         setOpenAlert(false);
@@ -247,6 +258,21 @@ const DetailEditForm = (props) => {
           }
           label="Enabled"
           className={classes.checkbox}
+        />
+        <br />
+        <TextField
+          id="latitude"
+          label="Latitude"
+          name="lat"
+          value={detail.lat}
+          onChange={handleValueChange}
+        />
+        <TextField
+          id="longitude"
+          label="Longitude"
+          name="long"
+          value={detail.long}
+          onChange={handleValueChange}
         />
         <br />
         <TextField

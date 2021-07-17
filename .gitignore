@@ -5,6 +5,12 @@
 /.pnp
 .pnp.js
 
+# configs
+/src/config/fbConfig.js
+
+# firebase
+.firebase/
+
 # testing
 /coverage
 

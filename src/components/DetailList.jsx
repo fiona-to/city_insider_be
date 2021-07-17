@@ -1,3 +1,4 @@
+// Third party components, libs
 import React from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
@@ -14,6 +15,8 @@ import {
 } from "@material-ui/core";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 
+// Custom components
+import { sortArrayByNodeName } from "../utils/array_helper";
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
 import DetailListRow from "./DetailListRow";
@@ -40,15 +43,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component: DetailList
+/**
+ *  Component: DetailList
+ *
+ */
 const DetailList = (props) => {
   const classes = useStyles();
+  let details = [];
 
   // Connect to firestore's collection named "node"
   useFirestoreConnect(["detail"]);
-  const details = useSelector((state) => {
+  const fbResult = useSelector((state) => {
     return state.firestore.ordered.detail;
   });
+
+  // Sort details
+  if (fbResult && fbResult.length > 0) {
+    details = [...fbResult];
+    details.sort(sortArrayByNodeName);
+  }
 
   const onDetailDelete = (selected) => {
     props.deleteDetail(selected);

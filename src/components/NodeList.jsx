@@ -1,3 +1,4 @@
+// Third party components, libs
 import React from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
@@ -14,6 +15,8 @@ import {
 } from "@material-ui/core";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 
+// Custom components
+import { sortArrayByCatName } from "../utils/array_helper";
 import * as Color from "../_constant/color";
 import * as FontSize from "../_constant/fontSize";
 import NodeListRow from "./NodeListRow";
@@ -40,15 +43,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Component: NodeList
+/**
+ *  Component: NodeList
+ *
+ */
 const NodeList = (props) => {
   const classes = useStyles();
+  let nodes = [];
 
   // Connect to firestore's collection named "node"
   useFirestoreConnect(["node"]);
-  const nodes = useSelector((state) => {
+  const fbResult = useSelector((state) => {
     return state.firestore.ordered.node;
   });
+
+  // Sort nodes
+  if (fbResult && fbResult.length > 0) {
+    nodes = [...fbResult];
+    nodes.sort(sortArrayByCatName);
+  }
 
   const onNodeDelete = (selected) => {
     props.deleteNode(selected);
