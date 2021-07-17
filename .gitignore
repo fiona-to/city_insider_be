@@ -6,7 +6,7 @@
 .pnp.js
 
 # configs
-/src/config/fbConfig.js
+/src/**/fbConfig.js
 
 # firebase
 .firebase/
